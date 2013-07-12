@@ -1,4 +1,10 @@
+# eclipse 
+.classpath
+.project
+# eclipse bin
+./bin
 *.class
+.gitignore
 
 # Package Files #
 *.jar

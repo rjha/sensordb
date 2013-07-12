@@ -1,0 +1,52 @@
+
+
+ primary key
+------------
+While allocating capacity resources, Amazon DynamoDB assumes a relatively random access pattern across all primary keys.
+You should set up your data model so that your requests result in a fairly even distribution of traffic across primary
+keys. If a table has a very small number of heavily accessed hash key elements, possibly even a single very heavily 
+used hash key element, traffic is concentrated on a small number of partitions – potentially only one partition.
+
+
+ read/write capacity
+--------------------
+ write = 1kb/second/unit
+ read = 4kb/second/unit
+
+ Example
+
+ item = 64kb
+ 10^4 / seconds
+ write units required = 64x10^4 = 6.4x10^5
+ read units required = 64x10^4 / 4 = 1.6x10^5
+
+ pricing
+---------
+Every second - 1 ping
+Writing 64kb of data
+64 units of write
+6.4*$0.0065/ hour
+6.4*0.0065*720 / month = 30$
+
+
+10^6 sensors
+1 kb/second
+10^6 writes/second
+
+verdict : looks expensive.
+
+
+
+
+
+
+ 
+ 
+
+
+	
+
+
+
+
+
