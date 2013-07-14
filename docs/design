@@ -1,5 +1,84 @@
 
 
 Device
+---------
+	name
+	manufacturer
+	version
+	description
+	device_id
+
+	variables
+		name-value pairs
+	meta_data
+		name-value pairs
+	
+sensor
+-----------
+	serial_number
+	device_template
+	meta_data
+		name-value pairs
+	+ location: special variable
+	+ path : special variable
+
+readings
+----------
+	sensor.serial_number
+	sensor.device.variables
+	sensor.device.meta_data
+	sensor.meta_data
+	+ sensor.special_variables
+	+ timestamp
+	
+	
+Provisioning
+------------
+
++ Add a Project
++ Add a Device
++ Add a Sensor
+
+project specific
+-----------------
+after provisioning 
+ - query the project 
+ - get variable keys
+ - parse my data on gateway
+ - push to central server using variables dictionary
+
+
+
+ platform
+ ---------
+ what you want to query on - should be decided before-hand?
+ project + sensor + variables dictionary - write some-where
+ 
+
+Activating sensors
+------------------
+	
+Example #1
+ Fleet tracker
+ I parse the data 
+ 
+
+ API design
+ projectId is part of authentication
+ write(sensorId,key-value pairs with timestamp)
+ 	write would check if this sensorId has a corresponding key or not
+
+ 
+ getVariableKeys(sensorId)
+ getVariableKeys(deviceId)
+ 
+ 
+   	
+
+ 
+ 
+ 
+ 
+	
 
 
