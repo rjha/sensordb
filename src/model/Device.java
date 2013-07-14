@@ -11,8 +11,9 @@ public class Device {
 	private String deviceId ;
 	private List<Variable> variables ;
 	
-	public Device(String deviceId) {
+	public Device(String deviceId, String name) {
 		this.deviceId = deviceId ;
+		this.name = name ;
 	}
 	
 	public String getManufacturer() {
@@ -54,8 +55,8 @@ public class Device {
 		return name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
+	public Account getAccount() {
+		return account ;
 	}
 	      
 }

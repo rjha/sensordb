@@ -3,17 +3,13 @@ package model;
 import java.util.HashMap;
 
 public class SensorDevice {
-	private String projectId ;
 	private Device device ;
 	private HashMap<String,String> metaData ;
+	private String projectId ;
 	
-	public SensorDevice(String projectId,Device device) {
-		this.projectId = projectId ;
+	public SensorDevice(Device device) {
 		this.device = device ;
-	}
-	
-	public String getProjectId() {
-		return projectId;
+		this.metaData = new HashMap<String,String>() ;
 	}
 	
 	public Device getDevice() {
@@ -27,5 +23,18 @@ public class SensorDevice {
 	public void setMetaData(HashMap<String, String> metaData) {
 		this.metaData = metaData;
 	}
+	
+	public void addMetaData(String key, String value) {
+		this.metaData.put(key, value);
+	}
+	
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
 	
 }
