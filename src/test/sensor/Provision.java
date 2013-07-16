@@ -1,11 +1,11 @@
-package test;
+package test.sensor;
 import java.util.ArrayList;
 
 import model.* ;
 
 public class Provision {
 	
-	public static void main(String[] args) {
+	public void createProject() {
 		
 		// create account
 		// load devices to an account
@@ -37,8 +37,6 @@ public class Provision {
 		Sensor s2 = new Sensor(sd1,"s002");
 		s2.addMetaData("location", "outdoor") ;
 		tweetPlant.addSensor(s2);
-		
-		
 		
 		
 	}

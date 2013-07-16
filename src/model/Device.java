@@ -55,8 +55,5 @@ public class Device {
 		return name;
 	}
 	
-	public Account getAccount() {
-		return account ;
-	}
 	      
 }
