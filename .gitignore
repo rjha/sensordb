@@ -1,14 +1,14 @@
+.gitignore
 # eclipse 
 .classpath
 .project
 .settings
 # eclipse bin
-./bin
+java/bin
 *.class
-.gitignore
 
-# eclipse deployment
-WebContent
+# web application 
+java/WebContent
 
 # Package Files #
 *.jar
