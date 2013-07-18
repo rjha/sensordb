@@ -73,6 +73,10 @@ Example #1
  getVariableKeys(deviceId)
  
  
+
+API - should accept multiple items in every call
+That is important - because you can save round trip times that way!
+
    	
 
  

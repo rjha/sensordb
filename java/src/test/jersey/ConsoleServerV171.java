@@ -1,16 +1,16 @@
 package test.jersey;
 
 
-import java.io.IOException;
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.net.httpserver.HttpServer;
+// import java.io.IOException;
+// import com.sun.net.httpserver.HttpServer;
+// import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 
-public class CalculatorServer {
+public class ConsoleServerV171 {
 
-	static final String BASE_URI = "http://localhost:9099/calculator/";
+	static final String BASE_URI = "http://localhost:9099/apiv1/";
 
 	public static void main(String[] args) {
-		
+		/*
 		try {
 			// base_uri is for this server only
 			// and has no relationship with ROOT resource class
@@ -24,6 +24,6 @@ public class CalculatorServer {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		} */
 	}
 }
