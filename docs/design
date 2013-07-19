@@ -72,10 +72,44 @@ Example #1
  getVariableKeys(sensorId)
  getVariableKeys(deviceId)
  
- 
+REST API Design
+------------------ 
+Input
 
 API - should accept multiple items in every call
 That is important - because you can save round trip times that way!
+
+Return values from API
+ - How to distinguish error cases from success?
+	+ return a code?
+		sometimes we can return HTTP status code 200 and an error?
+	+ return error string?
+
+
+Error design
+	- Internal errors should not be exposed to the client
+	- client should get errors in terms of well defined HTTP codes
+		+ 200 OK
+		+ 500 internal error
+		+ 400 Bad Request (Argument exception)
+
+	multiple fine grained internal errors - should be mapped to - Coarse API exceptions
+	with right http response codes.
+	Error tracing inside service implementation only
+	Bubble up errors and preserve stack and log it
+	multiple traces is a bad idea	
+ 
+	
+	
+Service interface
+
+	+ service interface should not know about the internal errors 
+	+ service interface calls an implementation and deals with REST exceptions only
+
+Output
+	How to signal error?
+	
+
 
    	
 

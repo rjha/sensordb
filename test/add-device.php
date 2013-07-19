@@ -21,6 +21,8 @@
 
 	$strJson = json_encode($device);
 	$post_data = $strJson."\r\n" ;
+	$post_data = "" ;
+
 	// print_r($post_data); 
 	// exit ;
 
@@ -33,7 +35,8 @@
 	   );
 
 	
-	$post_url = "http://localhost:8080/sensordb/apiv1/device/add?token=bobo" ;
+	$post_url = "http://localhost:9099/sensordb/apiv1/device/add?token=bobo" ;
+
 
 	$ch = curl_init();
 	$user_agent = "Mozilla/5.0 (Windows NT 6.1; rv:22.0) Gecko/20130405 Firefox/22.0" ;
@@ -47,7 +50,13 @@
     curl_setopt ($ch, CURLOPT_URL, $post_url);
     curl_setopt ($ch, CURLOPT_POSTFIELDS, $post_data);
     curl_setopt ($ch, CURLOPT_POST, 1);
+	// @debugging
+	curl_setopt($ch, CURLOPT_VERBOSE, true);
 	$result = curl_exec ($ch);
+	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+	
+	echo "\n code = $http_code \n" ;
 	echo "\n ---- response ------- \n" ;
 	print_r($result);
 	echo "\n ---------------------- \n" ;

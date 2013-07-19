@@ -1,6 +1,5 @@
 package rest;
 
- 
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,7 +12,7 @@ import javax.ws.rs.core.Application ;
 import javax.ws.rs.core.MediaType;
 
 import dto.Device ;
- 
+
 
 @Path("/apiv1")
 public class Service extends Application {
@@ -25,16 +24,8 @@ public class Service extends Application {
 	public String addDevice(@QueryParam("token") String token,String json) {
 		// @todo use token for authentication
 		String response = null ;
-		
-		try {
-			DeviceServiceImpl device = new DeviceServiceImpl() ;
-			response = device.create(json) ;
-			
-		} catch(Exception ex) {
-			// exception mapper
-			// map exception to http code
-		}
-		
+		DeviceServiceImpl device = new DeviceServiceImpl() ;
+		response = device.create(json) ;
 		return response ;
 	}
 	

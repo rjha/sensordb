@@ -9,7 +9,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 public class ConsoleServerV2 {
 
-	static final String BASE_URI = "http://localhost:9099/";
+	static final String BASE_URI = "http://localhost:9099/sensordb";
 
 	public static void main(String[] args) throws Exception {
 		HttpServer server = null ;
