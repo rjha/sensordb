@@ -1,10 +1,11 @@
 package rest.exception;
 
 import javax.ws.rs.WebApplicationException;
+//import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import dto.ErrorBean;
+//import dto.ErrorBean;
 
 public class RestException extends WebApplicationException  {
 	
@@ -27,15 +28,16 @@ public class RestException extends WebApplicationException  {
      }
      
      public RestException(Status status, String message) {
-    	 /*
+    	 
          super(Response.status(status)
         		 .entity(message)
         		 .type("text/plain")
-        		 .build()); */
+        		 .build()); 
+         /*
     	 super(Response.status(status)
         		 .entity(new ErrorBean(status.getStatusCode(),message))
-        		 .type("text/plain")
-        		 .build());
+        		 .type(MediaType.APPLICATION_JSON)
+        		 .build()); */
     	 
      }
 }
