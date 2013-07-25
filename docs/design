@@ -1,4 +1,15 @@
 
+API 
+------
+
+verbs
+ - add/ update/ delete
+ - list 
+
+/account/add
+/device/add
+/device/variables
+
 
 Device
 ---------
@@ -45,7 +56,13 @@ after provisioning
  - query the project 
  - get variable keys
  - parse my data on gateway
- - push to central server using variables dictionary
+
+Pushing the data can happen in two ways
+	- sensor serial# / data in raw format
+	(e.g client from Arduino board to central server) 
+
+	- push to central server using variables dictionary
+    IoT gateway => 
 
 
 
@@ -112,11 +129,210 @@ Output
 
 
    	
+Azure Table
+------------
 
- 
- 
- 
- 
++ rows with same partition keys are kept together
++ primary key + partition key to locate a row
++ ideally queries should only use primary key + partition key
++ Rollups - should be separate tables
++ Nagel algorithm limitations
+
+variable can be anything
+should we have a new table for every project + variable?
+
++ 1 MB per entity limitation
++ 500 writes/second / partition?
++ 100 TB per storage account
++ No limit on number of tables?
++ property names - 255 chars in size - C# convention
++ 252 custom properties + 3 system = total 1MB in size (including keys)
++  partition key : for load balancing : upto 1kb in size
++ Edm.Binary : can be 64KB in size
++ split - storage account/table/partition key/row key
+	- 5 storage accounts/subscription
+	- N tables per storage acocunt (should add upto 100TB)
+	2012 : 200 TB
 	
++ throughput - 5000 entities/second for a storage account
+	2012 : 20,000 entities/second
 
++ throughput - 500 entities/second for a partition
+	2012 : 2000 entities/second
+
+
+ Azure Table details
+-----------------------
+
+Account
+ + name
+ + RowKey : GUID? 
+ + PartitionKey : ?
+
+How to search on Account names? 
+	+ can we create an index on name property?
+
+partition key : is it worthwhile to create a separate partition key for each account?
+can we use just one partition key for all accounts?
+
+
+
+ sensor queries
+----------------
+
+for an account and project
+
+ - read sensor variables
+ - Give me last 60 sensor.variable.X
+ - Give me last 60 sensor.variable.Y
+
+ account + project + sensor serial # + Tick
+ Better to use project + sensor serial # + Tick
+
+	read all the variables 
+	P | T 
+    p1 t1
+    p2 t2
+    p3 t3
+
+
+@imp When writing, clients should append new events to each of the partitions in round robin fashion so that all partitions 
+ grow at a similar rate
+@imp azure works on the partition scheme - trick is never to load one partition server. split the request 
+across partition servers.
+
+
+RRD-TOOL
+---------
+
+# Resolution    
+resolution should be part of data collection
+sensor A - sending variable X - resolution 1S/1M/1D 
+for resolution of 1 s-  10 ticks will correspond to 10 seconds etc.
+
+
+# timeseries start:end times
+# timeseries time:offset
+
+# first timestamp of timeseries
+# latest timestamp of timeseries
+# steps 
+when queriying. You can specify start:time, end:time and steps 
+steps will depend on resolution?
+# consolidation (rollup) RRDTOOL provides following ready made consolidations
+
+KairosDB
+-----------
+#1 metric vs. sensor
+capturing a metric is like receiving data from a sensor. 
+in sensordb we have a ton of sensors and problem is bit different (is it?)
+we can treat the variable (X) like a metric and a sensor like a machine/host?
+
+#2 time windows 
+	absolute start time
+	absolute end time
+	relative start time
+	relative end time
+
+finally we need to calculate a time window in terms of ticks
+
+Time window can be defined in terms of 
+	+ Unit (minute/ day / week / hour/ second)
+	+ size (an integer, 5 minute, 4 Hour etc.)
+if nothing is specified then assume assume "last size unit", e.g. last 2 hours etc.
+
+ 
+
+#3 group by tag concept
+	say, for a metric we capture values and a set of tags.
+    one of the tags is customer
+
+Data is received, like
+M | TS1 | customer = X | V1
+M | TS2 | customer = X | V2
+M | TS3 | customer = Y | V3
+M | TS4 | customer = X | V4
+M | TS5 | customer = Y | V5
+
+
+ if query time window is TS3 -> TS5 then on group by tag=customer
+TS3 | V3
+TS5 | V5
+TS4 | V4
+
+# group by value 
+
+we are capturing X1,X2,...Xn all the data points for metric X.
+X(min) - X(max) has a range
+we can ask for slices of values
+say min is 101, max is 900 and we can ask to group by values with slice size of 100
+Then what we get is 
+	slice 1 - X beloning to values between 101-200 
+	slice 2 - X beloning to values between 201-300 etc.
+
+#group by time
+
+A time window
+create slices of this time window
+return values of metric that falls inside the slice
+Do for all slices
+
+# Aggregates
+min, max, average etc.
+of captured data? or do we do this in service layer?
+
+# min/max/average
+of a metric captured so far
+
+# fetch all hosts with a particular metric value
+ show all hosts where X = X0 
+
+#kairosDB schema
+
+data_points
+------------
+say metric is X, tag is host
+we start keeping the data in data_points table 
+row keys are
+	X+ ts_start + host_name 
+	column:name is offset from row_key.ts_start 
+	column:value is actual value of X at that ts (row_key.ts_start + column.name offset)
+
+A row can only keep so much data (2 GB) - when we are over that limit
+we will start a new for this host 
+so new row key will be
+X+ ts_start2 + host_name 
+
+
+
+row_key_index
+-------------
+row_key : X
+column:name : data_point.row_key_1, data_point.row_key_2 etc.
+
+
+Query
+------
+
+To do a query now,
+look @ row_key_index columns, find the row_keys of data_point table using time stamps
+filter row_key on tags
+issue a parallel query on rows to find data in required time-window
+
+
+
+
+
+
+
+
+
+
+
+
+sensordb
+---------
+# introduce the concept of threshold
+(show values above a particular threshold) 
+we can include that in query part where we want X with values > X0
 

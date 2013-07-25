@@ -1,0 +1,113 @@
+
+
+ ----------------------
+ * single table design *
+ ----------------------
+
+data from all sensors are kept in a table called sensor_readings
+the sensor_readings table have following keys
+
+sensor_readings
+-----------------
+projectId + serial # + date (partition key)
+tick (row key)
+x1 : vx1
+x2 : vx2
+..
+xn : vxn
+TS : unix timestamp
+-------------------
+
+Every client is sending data for its own serial_number
+Expected throughput for partition :
+	data points/second/sensor 
+	e.g. for sensor sending N readings per second, we are supposed to write 
+	N rows into sensor_readings table
+
+Expected size of partition
+	R readings/second x 86400 seconds/ dat = 86400xR 
+
+sensor_readings_metadata
+------------------------
+projectId + serial # (PK)
+date (RK)
+least_ts : Tick
+num_entries : value
+----------x---------------
+
+partition size : growing : 365/year
+expected throughput : what can arrive from a single sensor
+
+
+
+what is Tick?
+	DateMax.Tick - (Tick for current TS) 
+	so this is a number that will decrease with time, e.g. 100,98,97..
+	as the time increases. since Azure keeps the data sorted lexically
+	the most recent value (e.g. 1 end up on top)
+
+
+ 
+ single sensor query 
+---------------------
+To fetch data for a single sensor, say last 60 readings of a sensor 
+you can form the PK and read the latest 60 rows.
+
+To read data between two intervals, first convert the DateTime to Ticks,
+say between Tick 70 and 80 and use the Row key in query
+
+when query is across 2 dates?
+-------------------------------------
+
+Date(N) may only be 10 ticks old and we need to fetch 50 ticks from Date(N-1)
+if that is the case, we need to know
+	- number of entries for today
+	- start time stamp
+
+To fetch N ticks now, you need to fetch N1 from day(N) and (N-N1) from day(N-1)
+Azure Table does not have counter so we keep the entries for a sensor in sensor_readings_metadata table.
+
+
+ query for a variable across project
+--------------------------------------
+all sensors are sending variable X data. we would like to see X from all sensors in one place?
+what good would that be? Lets worry about the usefulness of such a query later.
+(see what kind of data rrd-world exposes)
+
+variable_readings
+-------------------
+project+X+date (PK)
+tick (RK)
+serial_no : sensor serial #
+value : value of X
+----------x--------
+
+write throughput :
+	+ All sensors that can send variable X
+	+ throughput = ( # of sensors) x (data points/sensor/second) 
+problem : say we have 10^4 sensors, they can make the partition hot.
+
+Fix is to split the sensors across groups or buckets when reading values from N sensors.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ 	 
+
+
+
+
+
+
+
+
