@@ -2,10 +2,6 @@ package dto;
 
 public class Variable {
 	
-	public static final int NUMERIC = 1 ;
-	public static final int BINARY = 2 ;
-	public static final int STRING = 3 ;
-	
 	private String name ;
 	private String unit ;
 	private int type ;
@@ -44,17 +40,5 @@ public class Variable {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
-
-	public static int getNumeric() {
-		return NUMERIC;
-	}
-
-	public static int getBinary() {
-		return BINARY;
-	}
-
-	public static int getString() {
-		return STRING;
-	} 
 	
 }

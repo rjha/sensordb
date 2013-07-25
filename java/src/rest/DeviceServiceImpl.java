@@ -40,6 +40,8 @@ public class DeviceServiceImpl {
 			ObjectMapper mapper = new ObjectMapper();
 			dto.Device device = mapper.readValue(json, dto.Device.class) ;
 			// @todo input check
+			// @todo send device to azure table service
+			
 			variables = device.getVariables() ;
 			// serialize variables
 			response = mapper.writeValueAsString(variables);

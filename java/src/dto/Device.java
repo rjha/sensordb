@@ -1,6 +1,7 @@
 package dto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import dto.Variable;
 
@@ -12,16 +13,11 @@ public class Device {
 	private String description ;
 	private String deviceId ;
 	private List<Variable> variables ;
-	
+	private HashMap<String,String> metaData ;
+
 	public Device() {
 		
 	}
-	
-	/*
-	public Device(String deviceId, String name) {
-		this.deviceId = deviceId ;
-		this.name = name ;
-	} */
 	
 	public String getName() {
 		return name;
@@ -42,9 +38,11 @@ public class Device {
 	public String getVersion() {
 		return version;
 	}
+	
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -69,4 +67,15 @@ public class Device {
 		this.variables = variables;
 	}
 	
+	public HashMap<String, String> getMetaData() {
+		return metaData;
+	}
+
+	public void setMetaData(HashMap<String, String> metaData) {
+		this.metaData = metaData;
+	}
+
+	public void setVariables(List<Variable> variables) {
+		this.variables = variables;
+	}
 }
