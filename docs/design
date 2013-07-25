@@ -219,7 +219,8 @@ for resolution of 1 s-  10 ticks will correspond to 10 seconds etc.
 # steps 
 when queriying. You can specify start:time, end:time and steps 
 steps will depend on resolution?
-# consolidation (rollup) RRDTOOL provides following ready made consolidations
+# consolidation (rollup) 
+@todo RRDTOOL provides following ready made consolidations
 
 KairosDB
 -----------
@@ -287,10 +288,11 @@ of a metric captured so far
 # fetch all hosts with a particular metric value
  show all hosts where X = X0 
 
-#kairosDB schema
+kairosDB schema
+-----------------
 
 data_points
-------------
+-------------
 say metric is X, tag is host
 we start keeping the data in data_points table 
 row keys are
@@ -311,7 +313,7 @@ row_key : X
 column:name : data_point.row_key_1, data_point.row_key_2 etc.
 
 
-Query
+query
 ------
 
 To do a query now,
@@ -321,18 +323,43 @@ issue a parallel query on rows to find data in required time-window
 
 
 
-
-
-
-
-
-
-
-
-
 sensordb
 ---------
-# introduce the concept of threshold
+
+# writing data
++ introduce the concept of threshold
 (show values above a particular threshold) 
 we can include that in query part where we want X with values > X0
 
++ refresh interval (resolution) - 1 DAY or 1 second etc. E.g.,
+	+ A cell tower can send fuel level every day
+	+ A moving fleet sends co-ordinates every 5 min.
+	+ A sensor sends data every second
+
+Millisecond precision may be required.
+
+# a sensor sends - time series. also capture  start_time for a partition
+# write data - value from sensor + timestamp  + value of meta data 
+# write should create automatic rollup (consolidation) - how?
+ @see cassndra advanced timeseries examples
+
+# queries
+	
+	- get last N data points for variable X from a sensor
+	- get last (N)(UNIT) of time data for variable X from a sensor 	
+	- while retrieving data - we can specify we want it in steps
+		e.g. retrieve last weeks data - show everyday? 
+		what does that mean anyway? how can we represent 1 day of data as a single data point?
+		apply aggregator? min/max/average etc.?
+		we can apply aggregator if data size is small
+		How to find data size? (end_time - start_time) / resolution for sensor
+		
+	- find sensors - where variable overshot the threshold and when?
+	- find sensors where variable X = X0 or variable X > X0 etc. ?
+	(based on threhold settings) 
+	X > X0, X = X0, X < X0 etc.
+
+
+	
+    
+	
