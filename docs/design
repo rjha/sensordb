@@ -343,23 +343,51 @@ Millisecond precision may be required.
 # write should create automatic rollup (consolidation) - how?
  @see cassndra advanced timeseries examples
 
+# A sensor has _delta_ resolution. if we do not receive data for more than N _delta_ 
+period then it should be flagged.
+
+Meta data
+
+sensor # - last_received_ts - resolution
+(now - last_received_ts ) > n * resolution means a problem case
+
+
+
 # queries
 	
 	- get last N data points for variable X from a sensor
 	- get last (N)(UNIT) of time data for variable X from a sensor 	
+        + This is defining time window for a query
+        + should we limit the time window span based on number of data point it contains?
+
 	- while retrieving data - we can specify we want it in steps
 		e.g. retrieve last weeks data - show everyday? 
 		what does that mean anyway? how can we represent 1 day of data as a single data point?
-		apply aggregator? min/max/average etc.?
+		maybe apply aggregator? min/max/average etc.?
 		we can apply aggregator if data size is small
 		How to find data size? (end_time - start_time) / resolution for sensor
+        
 		
-	- find sensors - where variable overshot the threshold and when?
-	- find sensors where variable X = X0 or variable X > X0 etc. ?
-	(based on threhold settings) 
-	X > X0, X = X0, X < X0 etc.
+	- find all sensors where variable value is above a threshold
+        e.g. All machines with HOT CPU
 
 
+    - we should have standard rollup/consolidation, like 5 min, 1HR, 24HR, 1week, 1month etc.
+    - Group by value
+       for a variable, capture data and make slices between min and max
+        can we keep stats for each Variable?
+        Answer - No. it would not be feasible to store aggregates because we can query
+        any arbitrary time window. we have to compute the aggregate.
+
+        find sensor serial numbers for each slice in given time window
+    - variable X : max/min/average across the variable in a given time window
+        (we always retrieve data in a particular time window)
+        these aggregates have to be computed.
+        does not look possible to just store and query such functions.
+
+    - for variable X : max, min, average seen so far (universal)
+        we can keep the value in store.
+  
 	
     
 	
