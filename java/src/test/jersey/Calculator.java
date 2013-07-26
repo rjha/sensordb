@@ -19,8 +19,16 @@ import javax.ws.rs.core.MediaType;
 // org.glassfish.jersey.servlet.ServletContainer
 
 
-@Path("/calculator")
+@Path("/v1")
 public class Calculator extends Application{
+	
+	@GET
+	@Path("/echo")
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String echoText(@QueryParam("x") String input) {
+		return input ;
+	}
 	
 	// curl -i -H "Content-Type: application/json" -X POST -d "firstName=james" http://localhost:9099/calculator/apiv1/test1?token=1234
 	

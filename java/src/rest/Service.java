@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import dto.Device ;
 
 
-@Path("/apiv1")
+@Path("/v1")
 public class Service extends Application {
 
 	@POST
