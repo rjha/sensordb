@@ -1,7 +1,5 @@
 package test.jersey;
 
-
-import javax.ws.rs.core.Application ;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -12,15 +10,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.server.JSONP;
+import com.yuktix.rest.exception.RestException;
 
-@Path("/v1")
-public class Calculator extends Application{
+
+@Path("/calculator")
+public class Calculator{
 	
 	@GET
 	@Path("/echo")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String echoText(@QueryParam("x") String input) {
+	public String echoMethod(@QueryParam("x") String input) {
 		return input ;
 	}
 	
@@ -31,7 +32,7 @@ public class Calculator extends Application{
 	@Path("/text")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String addJsonText(@QueryParam("token") String token, String json) {
+	public String textMethod(@QueryParam("token") String token, String json) {
 		// map json to json object 
 		return token + "::" + json + "\n";
 	}
@@ -43,7 +44,7 @@ public class Calculator extends Application{
 	@Path("/json")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String addJsonObject(@QueryParam("token") String token, test.jersey.dto.Account account) {
+	public String jsonMethod(@QueryParam("token") String token, test.jersey.dto.Account account) {
 		// map json to json object 
 		return token + "::" + account.getName() + "::" + account.getLocation() + "\n";
 	}
@@ -55,7 +56,7 @@ public class Calculator extends Application{
 	@Path("/form")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String addFormObject(@QueryParam("token") String token,
+	public String formMethod(@QueryParam("token") String token,
 			@FormParam("name") String name,
 			@FormParam("location") String location) {
 		// map json to json object 
@@ -65,8 +66,19 @@ public class Calculator extends Application{
 	@GET
 	@Path("/add/{a}/{b}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String addPlainText(@PathParam("a") double a, @PathParam("b") double b) {
+	public String addMethod(@PathParam("a") double a, @PathParam("b") double b) {
 		return (a + b) + "";
+	}
+	
+
+	@GET
+	@Path("/error")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@JSONP
+	@Produces({"application/javascript", MediaType.APPLICATION_JSON})
+	public String errorMethod() {
+		throw new RestException("json error in service") ;
+		
 	}
 	
 }

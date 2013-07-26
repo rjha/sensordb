@@ -23,7 +23,7 @@ public class GrizzlyHttpServer {
     
     public static ResourceConfig createApp() {
     	ResourceConfig rc = new ResourceConfig()
-		.packages("rest")
+		.packages("com.yuktix.rest")
 		.register(JacksonFeature.class);
         return rc;
         

@@ -8,7 +8,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Application ;
 import javax.ws.rs.core.MediaType;
 
 import com.yuktix.dto.Device;
@@ -19,7 +18,7 @@ import com.yuktix.dto.Device;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 
-public class Service extends Application {
+public class Service {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
