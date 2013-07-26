@@ -1,4 +1,4 @@
-package dto;
+package com.yuktix.dto;
 
 public enum VariableType {
 	BINARY(1, "BINARY"),

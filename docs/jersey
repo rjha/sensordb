@@ -1,0 +1,8 @@
+
+
+deployment
+------------
+glassfish already includes jaxrs-ri implementation and as such 
+does not require anything extra to deploy jersey applications.
+
+

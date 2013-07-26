@@ -1,6 +1,6 @@
 package test.sensor;
 
-import model.* ;
+import com.yuktix.model.*;
 
 // a gateway is project specific
 public class Gateway {

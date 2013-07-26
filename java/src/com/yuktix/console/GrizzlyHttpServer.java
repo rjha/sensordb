@@ -1,4 +1,4 @@
-package console;
+package com.yuktix.console;
 
 import java.io.IOException;
 import java.net.URI;

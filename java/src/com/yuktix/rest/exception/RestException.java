@@ -1,10 +1,11 @@
-package rest.exception;
+package com.yuktix.rest.exception;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import dto.ErrorBean;
+
+import com.yuktix.dto.ErrorBean;
 
 public class RestException extends WebApplicationException  {
 	

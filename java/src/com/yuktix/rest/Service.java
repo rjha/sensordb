@@ -1,4 +1,4 @@
-package rest;
+package com.yuktix.rest;
 
 
 import javax.ws.rs.Consumes;
@@ -11,16 +11,19 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Application ;
 import javax.ws.rs.core.MediaType;
 
-import dto.Device ;
+import com.yuktix.dto.Device;
+
 
 
 @Path("/v1")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+
 public class Service extends Application {
 
 	@POST
-	@Path("/device/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/device/add")
 	public String addDevice(@QueryParam("token") String token,String json) {
 		// @todo use token for authentication
 		String response = null ;
@@ -31,8 +34,6 @@ public class Service extends Application {
 	
 	@GET
 	@Path("/device/{deviceId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public Device getDevice(@QueryParam("token") String token, @PathParam("deviceId") String deviceId) {
 		//return a device
 		

@@ -1,4 +1,4 @@
-package rest.exception;
+package com.yuktix.rest.exception;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -7,7 +7,6 @@ import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.server.ParamException;
 
-	 
 	@Provider
 	public class ParamExceptionMapper implements ExceptionMapper<ParamException> {
 	    @Override

@@ -1,0 +1,14 @@
+
+client accept-header and mime type
+-----------------------------------
+If a resource class is capable of producing more that one MIME media type 
+then the resource method chosen will correspond to the most acceptable media 
+type as declared by the client. 
+
+
+@Consumes
+-----------
+we can specify what kind of mime types the server accepts. if the same mime
+is not sent by client in accept headers then we return an http 204.
+
+

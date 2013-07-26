@@ -1,4 +1,4 @@
-package dto;
+package com.yuktix.dto;
 
 public class ProjectDevice extends Device{
 	

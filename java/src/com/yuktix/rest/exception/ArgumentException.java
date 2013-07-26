@@ -1,4 +1,4 @@
-package rest.exception;
+package com.yuktix.rest.exception;
 import javax.ws.rs.core.Response.Status;
 
 public class ArgumentException extends RestException  {

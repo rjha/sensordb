@@ -1,7 +1,8 @@
 package test.sensor;
 import java.util.ArrayList;
 
-import model.* ;
+import com.yuktix.model.*;
+
 
 public class Provision {
 	

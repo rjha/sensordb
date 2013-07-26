@@ -1,13 +1,14 @@
-package rest;
+package com.yuktix.rest;
 
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import rest.exception.ArgumentException;
-import rest.exception.RestException;
+import com.yuktix.dto.Variable;
+import com.yuktix.rest.exception.ArgumentException;
+import com.yuktix.rest.exception.RestException;
 
-import dto.Variable;
+
 
  
 
@@ -38,7 +39,7 @@ public class DeviceServiceImpl {
 			
 			// parse json
 			ObjectMapper mapper = new ObjectMapper();
-			dto.Device device = mapper.readValue(json, dto.Device.class) ;
+			com.yuktix.dto.Device device = mapper.readValue(json, com.yuktix.dto.Device.class) ;
 			// @todo input check
 			// @todo send device to azure table service
 			
