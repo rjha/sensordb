@@ -28,11 +28,10 @@ public class RestException extends WebApplicationException  {
      }
      
      public RestException(Status status, String message) {
-    	 
     	 super(Response.status(status)
         		 .entity(new ErrorBean(status.getStatusCode(),message))
         		 .type(MediaType.APPLICATION_JSON)
         		 .build()); 
-    	 
      }
+     
 }

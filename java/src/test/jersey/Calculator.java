@@ -73,7 +73,6 @@ public class Calculator{
 
 	@GET
 	@Path("/error")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@JSONP
 	@Produces({"application/javascript", MediaType.APPLICATION_JSON})
 	public String errorMethod() {

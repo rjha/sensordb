@@ -1,14 +1,25 @@
 
-client accept-header and mime type
------------------------------------
+# latest user guide
+https://jersey.java.net/documentation/latest/user-guide.html
+
+# client accept-header and mime type
 If a resource class is capable of producing more that one MIME media type 
 then the resource method chosen will correspond to the most acceptable media 
 type as declared by the client. 
 
 
-@Consumes
------------
+# @Consumes annotation
 we can specify what kind of mime types the server accepts. if the same mime
 is not sent by client in accept headers then we return an http 204.
+
+# method entity parameter
+
+Unlike method parameters that are associated with the extraction of request parameters, 
+the method parameter associated with the representation being consumed does not require 
+annotating. In other words the representation (entity) parameter does not require a 
+specific 'entity' annotation. A method parameter without a annotation is an entity. 
+A maximum of one such unannotated method parameter may exist since there may only be a 
+maximum of one such representation sent in a request. 
+
 
 
