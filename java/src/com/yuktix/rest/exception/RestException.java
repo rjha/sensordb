@@ -10,7 +10,7 @@ import com.yuktix.dto.ErrorBean;
 public class RestException extends WebApplicationException  {
 	
 	private static final long serialVersionUID = 1L;
-	private static final String message = "internal service error" ;
+	private static final String message = "Internal service error" ;
 	
 	public RestException() {
 		super(Response.status(Status.INTERNAL_SERVER_ERROR)

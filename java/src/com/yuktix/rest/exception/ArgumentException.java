@@ -4,13 +4,12 @@ import javax.ws.rs.core.Response.Status;
 public class ArgumentException extends RestException  {
 	
 	private static final long serialVersionUID = 1L;
-	private static final String message = "Bad input : check request parameters" ;
 	
-	public ArgumentException() {
-		super(Status.BAD_REQUEST,ArgumentException.message);
+	public ArgumentException(String param) {
+		super(Status.BAD_REQUEST,String.format("Bad argument : %s ",param));
      }
  
-     public ArgumentException(String message) {
-         super(Status.BAD_REQUEST,message);
+     public ArgumentException(String param,String message) {
+    	 super(Status.BAD_REQUEST,String.format("Bad argument : %s : %s ",param,message)) ;
      }
 }
