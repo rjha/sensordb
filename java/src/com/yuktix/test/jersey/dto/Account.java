@@ -1,4 +1,4 @@
-package test.jersey.dto;
+package com.yuktix.test.jersey.dto;
 
 
 public class Account {

@@ -1,5 +1,5 @@
 
-package test.azure;
+package com.yuktix.test.azure;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package test.jersey;
+package com.yuktix.test.jersey;
 
 
 

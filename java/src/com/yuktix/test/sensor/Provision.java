@@ -1,4 +1,4 @@
-package test.sensor;
+package com.yuktix.test.sensor;
 import java.util.ArrayList;
 
 import com.yuktix.model.*;

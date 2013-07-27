@@ -1,4 +1,4 @@
-package test.jersey;
+package com.yuktix.test.jersey;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -44,7 +44,7 @@ public class Calculator{
 	@Path("/json")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String jsonMethod(@QueryParam("token") String token, test.jersey.dto.Account account) {
+	public String jsonMethod(@QueryParam("token") String token, com.yuktix.test.jersey.dto.Account account) {
 		// map json to json object 
 		return token + "::" + account.getName() + "::" + account.getLocation() + "\n";
 	}
