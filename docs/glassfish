@@ -1,0 +1,36 @@
+
+Add application logging to glassfish
+-------------------------------------
+
+# go to server logging.properties (or you can also add to default)
+$ find . -name log*.properties
+./glassfish/domains/domain1/config/logging.properties
+./glassfish/domains/domain1/config/default-config/logging.properties
+
+# Add level for your class  (through admin console or in logging.properties file)
+$ grep yuktix ./glassfish/domains/domain1/config/logging.properties
+com.yuktix.rest.exception.ThrowableMapper.level=INFO
+
+
+# now you can see errors thrown from your app in glassfish server.log file
+
+$ find . -name *.log | xargs grep yuktix
+[2013-07-28T23:19:50.303+0530] [glassfish 4.0] [SEVERE] [] [com.yuktix.rest.exception.ThrowableMapper] [tid: _ThreadID=20 _ThreadName=http-listener-1(3)] [timeMillis: 1375033790303] [levelValue: 1000]
+...
+
+
+
+web.xml for glassfish deployment
+----------------------------------
+glassfish v4 is not able to load MyApplication class when we use servlet 3.0 spec
+and do not specify a servlet class.  This problem was not there when service classes
+were directly extending Application. Now we have separate class that extends Application
+and we register different service classes there. Service classes no longer extend Application.
+
+So now we are specifying org.glassfish.jersey.servlet.ServletContainer servlet class
+and passing our application name com.yuktix.rest.MyApplication inside
+init-param of this servlet.
+(what jersey user guide lists as servley 2.5 deployment)
+
+
+

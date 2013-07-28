@@ -115,6 +115,10 @@ Error design
 	Error tracing inside service implementation only
 	Bubble up errors and preserve stack and log it
 	multiple traces is a bad idea	
+	# when to print stack trace and when not? 
+	# stack trace for input errors etc. - that would fill up the log
+		q) when do we need to see the stack trace? 
+        a) maybe only for unknown errors - what we are not checking explicitly!
  
 	
 	
