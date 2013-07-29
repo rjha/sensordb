@@ -1,0 +1,131 @@
+
+
+# storing time-series data
+ 
+A project deploys multiple sensors. Each sensor can send data for a number of variables.
+Suppose our android smartphone is acting as the sensor. It can send data for accelerometer
+as well as GPS co-rodinates. So one sensor is sending four variables, X1,X2,X3,X4.
+A variable is denoted by X(i). A sensor is an instance of a device. A device can send an array 
+of variables. [X1 X2 X3....]
+
+Any sensor has a frequency at which it sends data. Like, some sensors will send one data point/day
+while some other sensor can be sending data every second. (timeseries database accomodate even the millisecond
+precision). Caching or man-in-the-middle should be aware of the required frequency of a sensor so they do not 
+buffer the data above this interval.
+
+A device can have certain meta data attached to it that is inherited
+by sensors. All sensors in turn can define their own meta data via key-value pairs. E.g. suppose we are deploying
+A fluid level sensor to measure diesel level in gensets in buildings. One way to identify the sensors in a certain area code
+is to add a tag called zipcode to each sensor. There can be multiple sensors belonging to an area code and we can treat them
+as a group via zipcode tag.  
+
+
+# concept of threshold
+Values below and above set threshold should be flagged. Like if we are monitoring T and we want to 
+send an SMS when T > 350K then we should be able to set a threshold.MAX for sensor variable T 
+	threshold.MAX to warn when variable X is above threshold
+	threshold.MIN to warn when variable X is below threshold
+	
+# meta data about data points
+store meta-data about
+	start TS of a time-series
+	latest data and latest TS of a time-series
+	
+# flagging inactive sensors
+A sensor should send data every delta interval? 
+	No. How to detect inactive sensors?
+	sensor.last_TS is maintained
+
+# consolidation/Rollup
+we need to work with the moving average here.
+last 5 min of data - for moving average
+5 min/ 1 HR/ 1 DAY 
+	rollup sizes should be determined a-priori.
+
+	
+# query time-series data
+
+#concept time window : 
+	Absolute times 
+		start_time
+		end_time 
+
+	Relative times
+		start_time
+		end_time
+
+internally, we store (Date.max - Date.now) as a timestamp. 
+That means recent events have a smaller TS and TS keep decreasing as time goes on
+(eventually at Date.max - we get zero)
+
+
+Relative time 
+	relative to now
+	should support often used units like day,hour, minute
+	and we should be able to say, give me last 10 mins. data
+
+
+#concept data points
+sensors can have different frequency of sending data. so we should be able to say,
+give me last N data points together with getting data in a time window
+(using WMI interface from a windows machine - sending CPU utilization every millisecond)
+
+ 
+
+#query:1
+get last N data points for variable X from a sensor
+#query:2
+get data for variable X from a sensor in a given time window.	
+question : what if a given time window can contain thousands of data points?
+#query:3
+get latest value reported from a sensor
+#query:4
+get X value from all sensors having a particular value of a tag e.g. 
+		+ from a specific user in a company
+		+ filter by a specific gateway (use tags)
+		+ city=chennai etc.
+# query:5
+get max value for a day
+how to do that?
++ Day rollup for a particular sensor
+
+#query:6
+fetch data for a time window in custom steps
+retrieve last week's data - show every second day
+How to do that?	
+what does that mean anyway? how can we represent 1 day of data as a single data point?
+maybe apply aggregator function min/max/average etc.?
+we can only apply aggregator functions if data size is small
+How to find data size? (end_time - start_time) / resolution for sensor
+        
+#query:7
+find all sensors with variable X > X0		
+	e.g. All machines with HOT CPU
+
+#query:8
+group by concepts can only work if the data size is small.
+we cannot fetch 86,400 points and slice and dice it in groups
+
+#query:9
+fetch data across sensors
+	- tag based
+	- threshold based 
+	- what else?
+
+    - Group by value (done on client)
+		for a variable, capture data and make slices between min and max
+        can we keep stats for each Variable?
+        Answer - No. it would not be feasible to store aggregates because we can query
+        any arbitrary time window. we have to compute the aggregate.
+        find sensor serial numbers for each slice in given time window
+
+    - variable X : max/min/average across the variable in a given time window
+        (we always retrieve data in a particular time window)
+        these aggregates have to be computed.
+        does not look possible to just store and query such functions.
+
+#question - would you like to see all the sensors at the same time?
+does it even makes sense?
+
+
+

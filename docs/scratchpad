@@ -359,11 +359,43 @@ sensor # - last_received_ts - resolution
 
 # queries
 	
-	- get last N data points for variable X from a sensor
-	- get last (N)(UNIT) of time data for variable X from a sensor 	
+    #concept  time window vs. number of ticks - explain
+		A sensor may be sending one data point every day, another may be sending
+		1000 data points every day. so we may want to query like, give me last 15 values 
+		(15 ticks) or give me last 15 days worth of data (time window) 
+
+	#concept resolution/ refresh rate 
+		How fast can this sensor send me data.
+
+	# get last N data points for variable X from a sensor
+	# get last (N)(UNIT) of time data for variable X from a sensor 	
         + This is defining time window for a query
         + should we limit the time window span based on number of data point it contains?
 
+	# get latest value reported from a sensor
+	# get value from a sensor based on a tag 
+		(bucket/group/city=chennai) etc.
+		e.g. from a specific user in a company
+	# get the last value from yesterday 
+		query using absolute ticks / query latest - find the consumption
+	# get max value for a day
+	 + Day rollup for a particular sensor
+	 + filter by a specific gateway (use tags)
+
+	#concept frequency of data push can be anything - I am assuming millisecond precision 
+	(using WMI interface from a windows machine - sending CPU utilization every millisecond)
+
+    #concept - fetch data for a time window (in steps)
+	retrieve last week data - show every second day
+	how to do that?	
+
+	#concept rollup or consolidation 
+	day/week/month
+	question - what is the representative value for the rollup? (max/min/average?)
+		
+	#concept  - to be built in IoT gateway
+	do not push if X did not change.
+	
 	- while retrieving data - we can specify we want it in steps
 		e.g. retrieve last weeks data - show everyday? 
 		what does that mean anyway? how can we represent 1 day of data as a single data point?
@@ -392,6 +424,10 @@ sensor # - last_received_ts - resolution
     - for variable X : max, min, average seen so far (universal)
         we can keep the value in store.
   
+	#question - would you like to see all the sensors at the same time?
+	does it even makes sense?
+
+
 	
     
 	
