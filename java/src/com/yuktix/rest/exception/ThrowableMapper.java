@@ -26,7 +26,7 @@ import com.yuktix.dto.ErrorBean;
 	    	String message = "Internal service error" ;
 	    	
 	    	// jackson json parsing exception
-	    	if(ex instanceof org.codehaus.jackson.JsonParseException) {
+	    	if(ex instanceof org.codehaus.jackson.JsonProcessingException) {
 	    		message = String.format("Json parsing error : %s ", ex.getMessage());
 	    	}
 	    	

@@ -1,6 +1,7 @@
 package com.yuktix.rest;
 
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.yuktix.dto.DataPoint;
 import com.yuktix.dto.Device;
 
 
@@ -21,7 +23,12 @@ import com.yuktix.dto.Device;
 public class Service {
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/datapoint")
+	public DataPoint addDataPoint(@QueryParam("token") String token,DataPoint dp) {
+		 return dp ;
+	}
+	
+	@POST
 	@Path("/device/add")
 	public String addDevice(@QueryParam("token") String token,String json) {
 		// @todo use token for authentication
