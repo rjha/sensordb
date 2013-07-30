@@ -1,0 +1,36 @@
+
+
+	
+#Azure Tables Partition key and row key
+
+#rows with same partition keys are kept together
+    think of the partition as rows in cassandra speak!
+    partition key and row keys are used to locate a row inside partition
+    
+# ideally queries should only use primary key + partition key
+There is no concept of secondary indexes in azure tables. Fix the queries first and then
+include whatever we want in partition key and row key.
+
+# azure limitations
+    + 1 MB per entity limitation
+    + 2000 entities/second / partition
+    + 20,000 entities/second for a storage account
+    + 200 TB per storage account
+    + No limit on number of tables?
+    + property names - 255 chars in size - C# convention
+    + 252 custom properties + 3 system = total 1MB in size (including keys)
+    +  partition key : for load balancing : upto 1kb in size
+    + Edm.Binary : can be 64KB in size
+	+ 5 storage accounts/subscription that add upto 200 TB
+	
+
+
+#Avoid Append only patterns
+When writing, clients should append new events to each of the partitions 
+in round robin fashion so that all partitions grow at a similar rate
+trick is to never load one partition server. split the request across partitions.
+
+
+
+
+
