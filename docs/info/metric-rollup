@@ -1,0 +1,78 @@
+
+#concept  down sampling
+Rollup has different sizes, e.g. rollup5, rollup10 and rollup100
+
+There is an in-memory view of each rollup
+on start - This is in memory - nothing written to tables yet!
+
+MemRollup5 -> 
+MemRollup10 -> 
+MemRollup20 ->
+
+Now data starts arriving. After lowest rollup size has arrived (5 ticks)
+MemRollup5 -> 10,7,8,8,7
+we flush rollup5 from memory to tables and update next rollup in memory. 
+
+MemRollup5 -> (cleaned)
+MemRollup10->(7.0,9.0,8.0)
+MemRollup20->
+TableRollup5 -> (7.0,9.0,8.0) - in (min|max|avg. format)
+
+At next 5th Tick (10 overall)
+MemRollup5 -> 9,11,8,3,2
+MemRollup10->(7.0,9.0,8.0)
+MemRollup20->
+TableRollup5 -> (7.0,9.0,8.0) , (2.0,11.0,6.6)
+
+Again, we flush the MemRollup5 to TableRollup5.
+MemRollup10 has 2 values - so it is also fushed to TableRollup10 
+MemRollup20 gets first data point
+
+MemRollup5 ->(cleaned)
+MemRollup10->(cleaned)
+MemRollup20-> (2.0,11.0,7.3)
+TableRollup5 -> (7.0,9.0,8.0) , (2.0,11.0,6.6) 
+TableRollup10 ->(2.0,11.0,7.3)
+
+After 5 more points
+
+MemRollup5 ->4,6,8,9,7
+MemRollup10-> 
+MemRollup20-> (2.0,11.0,7.3)
+TableRollup5 -> (7.0,9.0,8.0) , (2.0,11.0,6.6)
+TableRollup10 -> (2.0,11.0,7.3)
+
+we flush the MemRollup5
+
+MemRollup5 ->(cleaned)
+MemRollup10->(4.0,9.0,6.8)
+MemRollup20->(2.0,11.0,7.3)
+TableRollup5 -> (7.0,9.0,8.0) , (2.0,11.0,6.6) ,(4.0,9.0,6.8)
+TableRollup10 -> (2.0,11.0,7.3)
+
+After 5 more points
+
+MemRollup5 ->6,7,8,9,3
+MemRollup10->(4.0,9.0,6.8)
+MemRollup20->(2.0,11.0,7.3)
+TableRollup5 -> (7.0,9.0,8.0) , (2.0,11.0,6.6) ,(4.0,9.0,6.8)
+TableRollup10 -> (2.0,11.0,7.3)
+
+clean MemRollup5
+clean MemRollup10 (2 points)
+
+MemRollup5 ->(cleaned)
+MemRollup10->(cleaned)
+MemRollup20->(cleaned)
+
+TableRollup5 -> (7.0,9.0,8.0) , (2.0,11.0,6.6) ,(4.0,9.0,6.8) , (3.0,9.0,6.6)
+TableRollup10 -> (2.0,11.0,7.3) ,(3.0,9.0,6.7)
+TableRollup20 ->(2.0,11.0,7.0)
+
+
+
+
+
+
+
+

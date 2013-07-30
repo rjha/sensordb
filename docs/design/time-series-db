@@ -127,5 +127,45 @@ fetch data across sensors
 #question - would you like to see all the sensors at the same time?
 does it even makes sense?
 
+#plant tweet example
+
+Deploy a moisture sensor for two pots. The pots are labeled indoor and outdoor.
+we send data every 30 mins. to see if plants are thirsty.
+if plant is thirsty then we send a tweet.
+
+Device - variable M is moisture content in percentage (a number between 0 and 100)
+Threshold - if M < 50 then send an alert
+sensor meta data - (location=indoor|outdoor)
+
+what we want to see:- 
+
+    moisture content at both plants
+    moisture content for last 24 HR in steps of 1 HR 
+
+# fleet tracker example
+    A device that sends - GPS co-ordinates 
+    sensor meta data = VIN (VIN=xxx1234)
+    what we want to see
+        + stationary vehicles with VIN
+        
+# volcano temperature tracking
+sensors sending T data
+Threshold - alert if T > T0
+what we want to see
+    + All sensors (number < 10) with temperature last 1 HR in steps of 5min.
+        (variable T across the sensors)
+    + Heat map of area - with T > T0 in red
+
+# Genset at a building - sending diesel level 
+    A device that sends - fluid level + Temperature
+    fluid level - a number between 0 and 100. T is a number
+    sensors are groups by zipcode (sensor meta data zipcode=560034)
+    Threshold.MIN for fluid level = 40
+
+    what we want to see
+        + Data from all sensors in a zipcode (fluid level + T)
+        + All sensors in a zipcode below threshold level 
 
 
+
+ 
