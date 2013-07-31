@@ -1,0 +1,20 @@
+
+#why json schema validator?
+The rest service consumes JSON. what is coming in as string is deserialized
+by Jackson library into objects. However, Jackson does not perform any validation
+(@JsonProperty(required=true)) during deserialization.
+
+what happens to the missing properties? simply serialized as null.
+we can do the check against null for missing required properties but that means
+writing more code.
+
+# How about other libraries, e.g. Moxy?
+
+
+
+# Bean validation framework
+    - hibernate validator can do bean validation.
+    - may be more heavy weight as it supports EL syntax as well.
+
+# github.com/fge/json-schema-validator
+

@@ -1,9 +1,29 @@
 
-package hierarchy view
-------------------------
+#package hierarchy view
 To get package explorer to show the hierarchy view (vs. the flat view)
 click on the \/ (right down arrow) in package explorer and open up menu
 There in package presentation - select desired view
+
+#change user name
+or value of @author tag
+
+go to eclipse.ini file and there supply user.name on command line
+eclipse will read this property to set @author tag.
+
+-vmargs
+-Duser.name="rajeev jha"
+-Dosgi.requiredJavaVersion=1.6
+
+# comments for types (classes, interfaces etc.)
+eclipse | windows | preferences | Java | Code style | Code templates
+select comments | Types and apply.
+
+# copyright notice to all files
+install eclipse copyright plugin
+Then goto
+windows | preferences | general | copyright
+and make changes there.
+
 
 
 
