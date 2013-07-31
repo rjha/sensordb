@@ -29,13 +29,8 @@
     // Unix timestamp
     $unix_ts = time();
 
-	$data = array(
-				"projectId" => "p001" ,
-				"serialNumber" => "sensor001" ,
-				"readings" => array(
-					array("name" => "pressure" ,"value" => "86.0", "timestamp" => $unix_ts), 
-                    array("name" => "temperature" ,"value" => "279.0", "timestamp" => $unix_ts)),
-                 "metaData" => array( array( "name" => "location" , "value" => "building001")));
+	$data = array("projectId" => "p001" ,
+				"serialNumber" => "sensor001");
 
 	$strJson = json_encode($data);
 	// extra linefeed and carriage is required for POST data 
@@ -49,7 +44,7 @@
 	   );
 
 	
-	$post_url = "http://localhost:9090/sensordb/v1/datapoint?token=t001" ;
+	$post_url = "http://localhost:9090/sensordb/v1/query" ;
 	$ch = get_curl_handle($headers,$post_url,$post_data,true) ;
 
 	$result = curl_exec ($ch);

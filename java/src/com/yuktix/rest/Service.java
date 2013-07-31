@@ -2,6 +2,9 @@ package com.yuktix.rest;
 
 
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +16,9 @@ import javax.ws.rs.core.MediaType;
 
 import com.yuktix.dto.DataPoint;
 import com.yuktix.dto.ResponseBean;
+import com.yuktix.dto.ResultBean;
+import com.yuktix.dto.Sensor;
+import com.yuktix.tsdb.Query;
 import com.yuktix.tsdb.Store ;
 
 
@@ -28,6 +34,15 @@ public class Service {
 		Store tsdb = new Store() ;
 		tsdb.addDataPoint(dp);
 		ResponseBean bean = new ResponseBean(200,"success");
+		return bean ;
+	}
+	
+	@POST
+	@Path("/query")
+	public ResultBean query(Sensor sensor) {
+		Query tsdb = new Query() ;
+		List<HashMap<String,String>> response = tsdb.getLatest(sensor);
+		ResultBean bean = new ResultBean(200,response);
 		return bean ;
 	}
 	
