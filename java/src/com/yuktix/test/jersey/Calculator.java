@@ -11,8 +11,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.JSONP;
-import com.yuktix.rest.exception.RestException;
-
 
 @Path("/calculator")
 public class Calculator{
@@ -75,8 +73,8 @@ public class Calculator{
 	@Path("/error")
 	@JSONP
 	@Produces({"application/javascript", MediaType.APPLICATION_JSON})
-	public String errorMethod() {
-		throw new RestException("json error in service") ;
+	public String errorMethod() throws Exception {
+		throw new Exception("json error in service") ;
 		
 	}
 	
