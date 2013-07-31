@@ -2,6 +2,10 @@ package com.yuktix.dto;
 
 import java.util.List;
 
+
+// @todo add json input validation using json-schema
+// or a bean validation framework like hibernate validator
+
 public class DataPoint {
 	private String serialNumber ;
 	private String projectId ;

@@ -13,7 +13,8 @@ import javax.ws.rs.core.MediaType;
 
 import com.yuktix.dto.DataPoint;
 import com.yuktix.dto.Device;
-
+import com.yuktix.dto.ResponseBean;
+import com.yuktix.tsdb.Store ;
 
 
 @Path("/v1")
@@ -24,30 +25,11 @@ public class Service {
 
 	@POST
 	@Path("/datapoint")
-	public DataPoint addDataPoint(@QueryParam("token") String token,DataPoint dp) {
-		 return dp ;
-	}
-	
-	@POST
-	@Path("/device/add")
-	public String addDevice(@QueryParam("token") String token,String json) {
-		// @todo use token for authentication
-		String response = null ;
-		DeviceServiceImpl device = new DeviceServiceImpl() ;
-		response = device.create(json) ;
-		return response ;
-	}
-	
-	@GET
-	@Path("/device/{deviceId}")
-	public Device getDevice(@QueryParam("token") String token, @PathParam("deviceId") String deviceId) {
-		//return a device
-		
-		Device indrionPTHSensor = new Device();
-		indrionPTHSensor.setManufacturer("indrion in bangalore");
-		indrionPTHSensor.setDescription("single board capable of reading P/T/H");
-		
-		return indrionPTHSensor ;
+	public ResponseBean addDataPoint(@QueryParam("token") String token,DataPoint dp) {
+		Store tsdb = new Store() ;
+		tsdb.addDataPoint(dp);
+		ResponseBean bean = new ResponseBean(200,"success");
+		return bean ;
 	}
 	
 	@GET
