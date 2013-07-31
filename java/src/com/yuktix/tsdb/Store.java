@@ -13,6 +13,7 @@ import com.yuktix.dto.DataPoint;
 import com.yuktix.dto.NameValuePair;
 import com.yuktix.dto.Reading;
 import com.yuktix.rest.exception.RestException;
+import com.yuktix.util.Log;
 import com.yuktix.cloud.azure.Table;
 
 public class Store {
@@ -29,18 +30,21 @@ public class Store {
 			
 			HashMap<String, EntityProperty> data = new HashMap<String, EntityProperty>();
 			Iterator<Reading> readings = dp.getReadings().iterator();
-
+			Reading reading ;
+			
+			//readings
 			while (readings.hasNext()) {
-				data.put(readings.next().getName(), new EntityProperty(readings
-						.next().getValue()));
-				data.put("timestamp", new EntityProperty(readings.next()
-						.getTimestamp()));
+				reading = readings.next();
+				data.put(reading.getName(), new EntityProperty(reading.getValue()));
+				data.put("timestamp", new EntityProperty(reading.getTimestamp()));
 			}
 
+			//meta data
 			Iterator<NameValuePair> nvps = dp.getMetaData().iterator();
+			NameValuePair nvp ;
 			while (nvps.hasNext()) {
-				data.put(nvps.next().getName(), new EntityProperty(nvps.next()
-						.getValue()));
+				nvp = nvps.next();
+				data.put(nvp.getName(), new EntityProperty(nvp.getValue()));
 			}
 
 			TableEntity entity = new DynamicTableEntity(data);
@@ -52,6 +56,7 @@ public class Store {
 			client.execute("test", top);
 
 		} catch (Exception ex) {
+			Log.error("error in tsdb store",ex);
 			throw new RestException("error adding new data point");
 		}
 	}

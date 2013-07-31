@@ -21,6 +21,9 @@ public class Table {
 	public CloudTableClient getConnection() throws Exception {
 		// is client null?
 		if(client == null) {
+			// @todo - when client is null, all subsequent requests will return error
+			// we would like to build a retry-logic inside this client after a timeout
+			// @todo read error messages from a bundle
 			throw new Exception("error :: azure cloud table client is not initialized") ;
 		}
 		
@@ -28,23 +31,26 @@ public class Table {
 	}
 
 	public Table() {
+		boolean done = false ;
+		
 		try {
-			ResourceBundle bundle = ResourceBundle.getBundle("sensordb",
-					Locale.US);
+			ResourceBundle bundle = ResourceBundle.getBundle("sensordb",Locale.US);
 			String accountName = bundle.getString("azure.account.name");
 			String accountKey = bundle.getString("azure.account.key");
 			StorageCredentials credentials = new StorageCredentialsAccountAndKey(accountName, accountKey);
 			CloudStorageAccount storageAccount = new CloudStorageAccount(credentials);
 			this.client = storageAccount.createCloudTableClient();
+			done = true ;
 			
 		} catch (Exception ex) {
-			this.client = null;
+			this.client = null; 
 			// log exceptions
 			String message  = "Error initializing Azure table service" ;
 			Log.error(message, ex);
 
 		} finally {
-			this.client = null;
+			if(!done)
+				this.client = null;
 		}
 	}
 

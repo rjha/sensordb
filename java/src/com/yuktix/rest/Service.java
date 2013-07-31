@@ -12,7 +12,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.yuktix.dto.DataPoint;
-import com.yuktix.dto.Device;
 import com.yuktix.dto.ResponseBean;
 import com.yuktix.tsdb.Store ;
 
