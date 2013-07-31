@@ -24,6 +24,12 @@ Then goto
 windows | preferences | general | copyright
 and make changes there.
 
+# doing error logging with java.util.Logger
+Go to Menu | Run |  Run configurations
+Go to Arguments tab
+-Djava.util.logging.config.file=/home/rjha/code/github/sensordb/java/web/logger.properties
+
+
 
 
 
