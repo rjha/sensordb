@@ -18,6 +18,7 @@ import com.yuktix.dto.DataPoint;
 import com.yuktix.dto.ResponseBean;
 import com.yuktix.dto.ResultBean;
 import com.yuktix.dto.SensorParam;
+import com.yuktix.dto.SensorTimeParam;
 import com.yuktix.tsdb.Query;
 import com.yuktix.tsdb.Store ;
 
@@ -51,6 +52,17 @@ public class Service {
 		return bean ;
 	}
 	
+	@POST
+	@Path("/query/sensor/time")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String query(SensorTimeParam param) {
+		// Query tsdb = new Query() ;
+		// List<HashMap<String,String>> response = tsdb.getInTimeWindow(param);
+		// ResultBean bean = new ResultBean(200,response);
+		// String response = "start::" + param.getStartTS() + " end::" + param.getEndTS() ;
+		String response = "start::" + param.getRstart() + " end::" + param.getRend() ;
+		return response ;
+	}
 	
 	@GET
 	@Path("/echo/{input}")

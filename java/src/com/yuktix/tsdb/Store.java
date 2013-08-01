@@ -22,7 +22,7 @@ public class Store {
 		try {
 			// store DataPoint in azure table
 			long d_max = 9223372036854775807L;
-			// Date() returns in UTC only
+			// Date() defaults to GMT
 			long d_now = new Date().getTime();
 
 			String rowKey = String.format("%019d", (d_max - d_now));
