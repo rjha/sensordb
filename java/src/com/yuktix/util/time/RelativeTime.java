@@ -1,8 +1,9 @@
-package com.yuktix.dto;
+package com.yuktix.util.time;
 
-public class TimeWindow {
+
+public class RelativeTime {
 	private int value ;
-	private TimeWindowUnit unit ;
+	private HumanTimeUnit unit ;
 	
 	public int getValue() {
 		return value;
@@ -12,11 +13,11 @@ public class TimeWindow {
 		this.value = value;
 	}
 	
-	public TimeWindowUnit getUnit() {
+	public HumanTimeUnit getUnit() {
 		return unit;
 	}
 	
-	public void setUnit(TimeWindowUnit unit) {
+	public void setUnit(HumanTimeUnit unit) {
 		this.unit = unit;
 	}
 	

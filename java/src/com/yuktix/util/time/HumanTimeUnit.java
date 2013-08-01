@@ -1,6 +1,6 @@
-package com.yuktix.dto;
+package com.yuktix.util.time;
 
-public enum TimeWindowUnit {
+public enum HumanTimeUnit {
 	
 	SECOND("second"),
 	MINUTE("minute"),
@@ -10,10 +10,9 @@ public enum TimeWindowUnit {
 	MONTH("month"),
 	YEAR("year");
 	
-	
 	private String value ;
 	
-	private TimeWindowUnit(String value) {
+	private HumanTimeUnit(String value) {
 		this.value = value ;
 	}
 

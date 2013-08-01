@@ -13,7 +13,6 @@ import com.yuktix.rest.exception.RestException;
 import com.yuktix.util.Log;
 import com.yuktix.cloud.azure.Table;
 import com.yuktix.dto.SensorParam;
-import com.yuktix.dto.SensorTimeParam;
 
 /* 
  * class to model TSDB queries
@@ -76,7 +75,7 @@ public class Query {
 		}
 	}
 	
-	public List<HashMap<String,String>> getInTimeWindow(SensorTimeParam param) {
+	public List<HashMap<String,String>> getInTimeWindow(SensorParam param) {
 		return null ;
 	}
 		

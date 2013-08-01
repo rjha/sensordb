@@ -1,34 +1,29 @@
 package com.yuktix.test;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-import org.apache.commons.lang3.StringUtils;
+import com.yuktix.dto.SensorParam;
+import com.yuktix.dto.TimeParam;
+import com.yuktix.util.time.HumanTimeUnit;
+import com.yuktix.util.time.RelativeTime;
 
 public class Hello {
 	public static void main(String[] args)  throws Exception{
 		System.out.println("Hello world!");
-		ResourceBundle bundle = ResourceBundle.getBundle("sensordb",Locale.US);
-		String accountName = bundle.getString("azure.account.name") ;
-		String accountKey = bundle.getString("azure.account.key") ;
-		System.out.println("account name = [" + accountName + "]");
-		System.out.println("account key = [" + accountKey + "]");
+		SensorParam param = new SensorParam();
+		param.setSerialNumber("s001");
+		param.setProjectId("p001");
 		
-		Date d_max = new Date(Long.MAX_VALUE) ;
-		System.out.println(" Date.Max = " + d_max.getTime());
-		for(int i =0 ; i< 10 ;i ++) {
-			Thread.sleep(1);
-			Date d_now = new Date();
-			long diff = d_max.getTime()-d_now.getTime() ;
-			//String rowKey = StringUtils.leftPad(diff, 10, "0");
-			String rowKey = String.format("%019d", diff);
-			System.out.println(rowKey);
-		}
+		TimeParam time_slice = new TimeParam();
+		RelativeTime t1 = new RelativeTime();
+		t1.setUnit(HumanTimeUnit.MINUTE);
+		t1.setValue(1);
+		time_slice.setRstart(t1);
+		param.setTime_slice(time_slice);
 		
-		String rowKey = String.format("%019d", 124);
-		System.out.println(rowKey);
+		long ts1 = param.getTime_slice().getStartTS();
+		System.out.println("ts1 =>" + ts1);
 		
+		long ts2 = param.getTime_slice().getEndTS();
+		System.out.println("ts2 =>" + ts2);
 		
-	}
+	} 
 }
-

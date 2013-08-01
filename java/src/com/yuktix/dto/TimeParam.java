@@ -3,32 +3,28 @@ package com.yuktix.dto;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import com.yuktix.rest.exception.ArgumentException;
 
-public class SensorTimeParam {
+import com.yuktix.rest.exception.ArgumentException;
+import com.yuktix.util.time.RelativeTime;
+
+/**
+ * time slice parameter for REST services
+ * 1) time slice can be defined in terms of absolute start 
+ * and end. (unix timestamp in millis, GMT) 
+ * 
+ * 2) time slice can also be supplied as Human readable 
+ * value and units, e.g. 5 HOUR or 21 MINUTE.
+ * 
+ * when no end timestamp is specified - it defaults to now()
+ * 
+ *
+ */
+public class TimeParam {
 	
-	private String serialNumber ;
-	private String projectId ;
 	private String astart ;
 	private String aend ;
-	private TimeWindow rstart ;
-	private TimeWindow rend ;
-
-	public String getSerialNumber() {
-		return serialNumber;
-	}
-	
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
-	}
-	
-	public String getProjectId() {
-		return projectId;
-	}
-	
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
-	}
+	private RelativeTime rstart ;
+	private RelativeTime rend ;
 	
 	public String getAstart() {
 		return astart;
@@ -46,19 +42,19 @@ public class SensorTimeParam {
 		this.aend = aend;
 	}
 
-	public TimeWindow getRstart() {
+	public RelativeTime getRstart() {
 		return rstart;
 	}
 
-	public void setRstart(TimeWindow rstart) {
+	public void setRstart(RelativeTime rstart) {
 		this.rstart = rstart;
 	}
 
-	public TimeWindow getRend() {
+	public RelativeTime getRend() {
 		return rend;
 	}
 
-	public void setRend(TimeWindow rend) {
+	public void setRend(RelativeTime rend) {
 		this.rend = rend;
 	}
 
@@ -73,7 +69,9 @@ public class SensorTimeParam {
 			start = Long.parseLong(this.astart);
 			return start ;
 		} else {
-			start = this.rstart.getMilliTS();
+			// relative time unit, subtract from now() to get
+			// the absolute timestamp for this relative time window
+			start = new Date().getTime() - this.rstart.getMilliTS();
 			return start ;
 		}
 		
@@ -81,7 +79,7 @@ public class SensorTimeParam {
 	
 	public long getEndTS() {
 		long end = 1L ;
-		if(StringUtils.isBlank(this.astart) && (this.rstart == null)) {
+		if(StringUtils.isBlank(this.aend) && (this.rend == null)) {
 			// return now()
 			// Date() defaults to GMT
 			end = new Date().getTime();
@@ -93,7 +91,9 @@ public class SensorTimeParam {
 			end = Long.parseLong(this.aend);
 			return end ;
 		} else {
-			end = this.rend.getMilliTS();
+			// relative
+			// subtract from now()
+			end = new Date().getTime() - this.rend.getMilliTS();
 			return end ;
 		}
 		
