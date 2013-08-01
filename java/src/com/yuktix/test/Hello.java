@@ -2,8 +2,8 @@ package com.yuktix.test;
 
 import com.yuktix.dto.SensorParam;
 import com.yuktix.dto.TimeParam;
+import com.yuktix.util.time.HumanTime;
 import com.yuktix.util.time.HumanTimeUnit;
-import com.yuktix.util.time.RelativeTime;
 
 public class Hello {
 	public static void main(String[] args)  throws Exception{
@@ -13,7 +13,7 @@ public class Hello {
 		param.setProjectId("p001");
 		
 		TimeParam time_slice = new TimeParam();
-		RelativeTime t1 = new RelativeTime();
+		HumanTime t1 = new HumanTime();
 		t1.setUnit(HumanTimeUnit.MINUTE);
 		t1.setValue(1);
 		time_slice.setRstart(t1);

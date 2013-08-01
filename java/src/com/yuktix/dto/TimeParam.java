@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 
 import com.yuktix.rest.exception.ArgumentException;
-import com.yuktix.util.time.RelativeTime;
+import com.yuktix.util.time.HumanTime;
 
 /**
  * time slice parameter for REST services
@@ -23,8 +23,8 @@ public class TimeParam {
 	
 	private String astart ;
 	private String aend ;
-	private RelativeTime rstart ;
-	private RelativeTime rend ;
+	private HumanTime rstart ;
+	private HumanTime rend ;
 	
 	public String getAstart() {
 		return astart;
@@ -42,19 +42,19 @@ public class TimeParam {
 		this.aend = aend;
 	}
 
-	public RelativeTime getRstart() {
+	public HumanTime getRstart() {
 		return rstart;
 	}
 
-	public void setRstart(RelativeTime rstart) {
+	public void setRstart(HumanTime rstart) {
 		this.rstart = rstart;
 	}
 
-	public RelativeTime getRend() {
+	public HumanTime getRend() {
 		return rend;
 	}
 
-	public void setRend(RelativeTime rend) {
+	public void setRend(HumanTime rend) {
 		this.rend = rend;
 	}
 

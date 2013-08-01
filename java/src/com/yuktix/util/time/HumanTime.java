@@ -1,7 +1,7 @@
 package com.yuktix.util.time;
 
 
-public class RelativeTime {
+public class HumanTime {
 	private int value ;
 	private HumanTimeUnit unit ;
 	

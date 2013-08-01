@@ -54,7 +54,7 @@ public class Service {
 	@POST
 	@Path("/query/sensor/time")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getSensorDataInTimeWindow(SensorParam param) {
+	public String getSensorDataInTimeSlice(SensorParam param) {
 		// Query tsdb = new Query() ;
 		// List<HashMap<String,String>> response = tsdb.getInTimeWindow(param);
 		// ResultBean bean = new ResultBean(200,response);
