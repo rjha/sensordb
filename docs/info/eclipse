@@ -27,7 +27,11 @@ and make changes there.
 # doing error logging with java.util.Logger
 Go to Menu | Run |  Run configurations
 Go to Arguments tab
+Go to VM arguments (and not program arguments)
+Add following line to VM argument
 -Djava.util.logging.config.file=/home/rjha/code/github/sensordb/java/web/logger.properties
+
+
 
 
 
