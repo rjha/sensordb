@@ -30,7 +30,8 @@
     $unix_ts = time();
 
 	$data = array("projectId" => "p001" ,
-				"serialNumber" => "sensor001");
+        "serialNumber" => "sensor001",
+        "size" => 10);
 
 	$strJson = json_encode($data);
 	// extra linefeed and carriage is required for POST data 
@@ -44,7 +45,7 @@
 	   );
 
 	
-	$post_url = "http://localhost:9090/sensordb/v1/query" ;
+	$post_url = "http://localhost:9090/sensordb/v1/query/sensor/latest" ;
 	$ch = get_curl_handle($headers,$post_url,$post_data,true) ;
 
 	$result = curl_exec ($ch);
