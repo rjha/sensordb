@@ -42,7 +42,9 @@ public class Query {
 				ep = map.get(key);
 				datum.put(key, ep.getValueAsString());
 			}
-
+			
+			datum.put("server_ts", Long.toString(row.getTimestamp().getTime()));
+			datum.put("row_key", row.getRowKey());
 			series.add(datum);
 			counter++;
 
@@ -96,14 +98,14 @@ public class Query {
 			int size = 100 ;
 			
 			String partitionKey = param.getProjectId() + ";"+ param.getSerialNumber();
+			// end row key is smaller (recent ticks are smaller)
 			String where_condition = 
-					String.format("(PartitionKey eq '%s') and (RowKey ge '%s') and (RowKey le '%s') ",partitionKey,startRowKey,endRowKey);
+					String.format("(PartitionKey eq '%s') and (RowKey le '%s') and (RowKey ge '%s') ",partitionKey,startRowKey,endRowKey);
 			
 			TableQuery<DynamicTableEntity> myQuery = TableQuery
 					.from("test", DynamicTableEntity.class)
 					.where(where_condition).take(size);
 			
-			System.out.println(myQuery.toString()) ;
 			series = getRows(myQuery,size);
 			return series ;
 

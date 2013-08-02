@@ -47,7 +47,7 @@ public class Store {
 				data = new HashMap<String, EntityProperty>();
 				
 				data.put(reading.getName(), new EntityProperty(reading.getValue()));
-				data.put("timestamp", new EntityProperty(reading.getTimestamp()));
+				data.put("client_ts", new EntityProperty(reading.getTimestamp()));
 				
 				// meta data fixed for one batch of sensor readings
 				nvps = dp.getMetaData().iterator();
