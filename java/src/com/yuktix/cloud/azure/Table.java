@@ -40,6 +40,8 @@ public class Table {
 			StorageCredentials credentials = new StorageCredentialsAccountAndKey(accountName, accountKey);
 			CloudStorageAccount storageAccount = new CloudStorageAccount(credentials);
 			this.client = storageAccount.createCloudTableClient();
+			// timeout - 6 seconds
+			this.client.setTimeoutInMs(6000);
 			done = true ;
 			
 		} catch (Exception ex) {
