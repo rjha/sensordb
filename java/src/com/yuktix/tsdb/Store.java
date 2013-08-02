@@ -49,7 +49,7 @@ public class Store {
 				data.put(reading.getName(), new EntityProperty(reading.getValue()));
 				data.put("timestamp", new EntityProperty(reading.getTimestamp()));
 				
-				// same meta data for every reading of sensor
+				// meta data fixed for one batch of sensor readings
 				nvps = dp.getMetaData().iterator();
 				while (nvps.hasNext()) {
 					nvp = nvps.next();
@@ -60,6 +60,10 @@ public class Store {
 				entity = new DynamicTableEntity(data);
 				entity.setPartitionKey(partitionKey);
 				entity.setRowKey(rowKey);
+				// batch operation constraints
+				// # same PK 
+				// # 100 entities / 4MB 
+				// # one entity - can include once only
 				operation.insert(entity);
 				
 			}

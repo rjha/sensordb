@@ -46,21 +46,18 @@ public class Service {
 	@Path("/query/sensor/latest")
 	public ResultBean getSensorDataPoint(SensorParam param) {
 		Query tsdbQuery = new Query() ;
-		List<HashMap<String,String>> response = tsdbQuery.getLatest(param);
+		List<HashMap<String,String>> response = tsdbQuery.getDataPoint(param);
 		ResultBean bean = new ResultBean(200,response);
 		return bean ;
 	}
 	
 	@POST
 	@Path("/query/sensor/time")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getSensorDataInTimeSlice(SensorParam param) {
+	public ResultBean getSensorDataInTimeSlice(SensorParam param) {
 		Query tsdbQuery = new Query() ;
 		List<HashMap<String,String>> data = tsdbQuery.getInTimeSlice(param);
 		ResultBean bean = new ResultBean(200,data);
-		
-		String response = "start::" + param.getTime_slice().getStartTS() + " end::" + param.getTime_slice().getEndTS() ;
-		return response ;
+		return bean ;
 	}
 	
 	@GET
