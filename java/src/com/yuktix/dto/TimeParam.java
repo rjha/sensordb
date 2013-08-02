@@ -4,8 +4,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.yuktix.model.time.HumanTime;
 import com.yuktix.rest.exception.ArgumentException;
-import com.yuktix.util.time.HumanTime;
 
 /**
  * time slice parameter for REST services

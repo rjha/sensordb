@@ -1,4 +1,4 @@
-package com.yuktix.util.time;
+package com.yuktix.model.time;
 
 
 public class HumanTime {

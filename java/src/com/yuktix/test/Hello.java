@@ -2,8 +2,8 @@ package com.yuktix.test;
 
 import com.yuktix.dto.SensorParam;
 import com.yuktix.dto.TimeParam;
-import com.yuktix.util.time.HumanTime;
-import com.yuktix.util.time.HumanTimeUnit;
+import com.yuktix.model.time.HumanTime;
+import com.yuktix.model.time.HumanTimeUnit;
 
 public class Hello {
 	public static void main(String[] args)  throws Exception{

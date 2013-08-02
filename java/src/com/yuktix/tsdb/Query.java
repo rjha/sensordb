@@ -75,7 +75,8 @@ public class Query {
 		}
 	}
 	
-	public List<HashMap<String,String>> getInTimeWindow(SensorParam param) {
+	public List<HashMap<String,String>> getInTimeSlice(SensorParam param) {
+		// convert start_ts and end_ts to reverse ticks
 		return null ;
 	}
 		

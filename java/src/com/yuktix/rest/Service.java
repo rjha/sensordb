@@ -31,8 +31,8 @@ public class Service {
 	@POST
 	@Path("/datapoint")
 	public ResponseBean addDataPoint(@QueryParam("token") String token,DataPoint dp) {
-		Store tsdb = new Store() ;
-		tsdb.addDataPoint(dp);
+		Store tsdbStore = new Store() ;
+		tsdbStore.addDataPoint(dp);
 		ResponseBean bean = new ResponseBean(200,"success");
 		return bean ;
 	}
@@ -45,8 +45,8 @@ public class Service {
 	@POST
 	@Path("/query/sensor/latest")
 	public ResultBean getSensorDataPoint(SensorParam param) {
-		Query tsdb = new Query() ;
-		List<HashMap<String,String>> response = tsdb.getLatest(param);
+		Query tsdbQuery = new Query() ;
+		List<HashMap<String,String>> response = tsdbQuery.getLatest(param);
 		ResultBean bean = new ResultBean(200,response);
 		return bean ;
 	}
@@ -55,10 +55,10 @@ public class Service {
 	@Path("/query/sensor/time")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getSensorDataInTimeSlice(SensorParam param) {
-		// Query tsdb = new Query() ;
-		// List<HashMap<String,String>> response = tsdb.getInTimeWindow(param);
-		// ResultBean bean = new ResultBean(200,response);
-		// String response = "start::" + param.getStartTS() + " end::" + param.getEndTS() ;
+		Query tsdbQuery = new Query() ;
+		List<HashMap<String,String>> data = tsdbQuery.getInTimeSlice(param);
+		ResultBean bean = new ResultBean(200,data);
+		
 		String response = "start::" + param.getTime_slice().getStartTS() + " end::" + param.getTime_slice().getEndTS() ;
 		return response ;
 	}
