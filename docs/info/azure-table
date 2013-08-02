@@ -1,5 +1,14 @@
 
 
+#Table batch operation - restrictions
+
++ You can perform batch updates, deletes, inserts, merge and replace operations.
++ A batch operation can have a retrieve operation, if it is the only operation in the batch.
++ A single batch operation can include up to 100 table operations.
++ All entities in a single batch operation must have the same partition key.
++ A batch operation is limited to a 4MB data payload.
+
+
 	
 #Azure Tables Partition key and row key
 
