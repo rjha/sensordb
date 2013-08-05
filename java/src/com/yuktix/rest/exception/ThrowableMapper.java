@@ -6,8 +6,10 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import com.yuktix.dto.ErrorBean;
+
+import com.yuktix.dto.response.ErrorBean;
 import com.yuktix.util.Log;
+
 	/*  mapper class to catch jersey runtime errors */
 	
 	@Provider

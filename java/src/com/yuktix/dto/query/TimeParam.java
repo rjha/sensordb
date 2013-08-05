@@ -1,4 +1,4 @@
-package com.yuktix.dto;
+package com.yuktix.dto.query;
 
 import java.util.Date;
 

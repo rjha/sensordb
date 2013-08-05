@@ -8,9 +8,9 @@ import com.microsoft.windowsazure.services.table.client.DynamicTableEntity;
 import com.microsoft.windowsazure.services.table.client.EntityProperty;
 import com.microsoft.windowsazure.services.table.client.TableBatchOperation;
 import com.microsoft.windowsazure.services.table.client.TableEntity;
-import com.yuktix.dto.DataPointParam;
 import com.yuktix.dto.NameValuePair;
 import com.yuktix.dto.Reading;
+import com.yuktix.dto.query.DataPointParam;
 import com.yuktix.rest.exception.RestException;
 import com.yuktix.util.Log;
 import com.yuktix.util.TimeUtil;
@@ -26,7 +26,7 @@ public class Store {
 			// partition key is fixed
 			String partitionKey = dp.getProjectId() + ";"+ dp.getSerialNumber();
 			String rowKey = null ;
-			 
+			
 			// meta data
 			NameValuePair nvp ;
 			Iterator<NameValuePair> nvps ;
@@ -34,11 +34,11 @@ public class Store {
 			Iterator<Reading> readings ;
 			
 			// DataPoint has multiple readings
-			//store each reading in table
+			// store each reading in table
 			readings = dp.getReadings().iterator();
 			Reading reading ;
 			
-			//azure stuff
+			// azure stuff
 			HashMap<String, EntityProperty> data ;
 			TableEntity entity ;
 			TableBatchOperation operation = new TableBatchOperation();

@@ -13,7 +13,7 @@ import com.yuktix.rest.exception.RestException;
 import com.yuktix.util.Log;
 import com.yuktix.util.TimeUtil;
 import com.yuktix.cloud.azure.Table;
-import com.yuktix.dto.SensorParam;
+import com.yuktix.dto.query.SensorParam;
 
 /* 
  * class to model TSDB queries

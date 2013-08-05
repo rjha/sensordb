@@ -14,12 +14,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import com.yuktix.dto.DataPointParam;
-import com.yuktix.dto.ResponseBean;
-import com.yuktix.dto.ResultBean;
-import com.yuktix.dto.SensorParam;
-import com.yuktix.tsdb.Query;
-import com.yuktix.tsdb.Store ;
+import com.yuktix.dto.response.* ;
+import com.yuktix.dto.provision.* ;
+import com.yuktix.dto.query.* ;
+import com.yuktix.tsdb.*;
+
 
 
 @Path("/v1")
@@ -36,11 +35,6 @@ public class Service {
 		ResponseBean bean = new ResponseBean(200,"success");
 		return bean ;
 	}
-	
-	// query/sensor/latest (size in sensorParam)
-	// query/sensor/time/ (assume frequency * N points)
-	// query/alerts
-	// query/inactive
 	
 	@POST
 	@Path("/query/sensor/latest")
@@ -66,6 +60,30 @@ public class Service {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String echo(@PathParam("input") String echo) {
 		return echo ;
+	}
+	
+	@POST
+	@Path("/account/add")
+	public void addAccount(AccountParam param) {
+		 
+	}
+	
+	@POST
+	@Path("/project/add")
+	public void addProject(SensorParam param) {
+	 
+	}
+	
+	@POST
+	@Path("/device/add")
+	public void addDevice(SensorParam param) {
+		 
+	}
+	
+	@POST
+	@Path("/sensor/add")
+	public void addSensor(SensorParam param) {
+		
 	}
 	
 }

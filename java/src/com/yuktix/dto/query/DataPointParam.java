@@ -1,6 +1,9 @@
-package com.yuktix.dto;
+package com.yuktix.dto.query;
 
 import java.util.List;
+
+import com.yuktix.dto.NameValuePair;
+import com.yuktix.dto.Reading;
 
 
 // @todo add json input validation using json-schema

@@ -5,7 +5,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.yuktix.dto.ErrorBean;
+import com.yuktix.dto.response.ErrorBean;
 
 public class RestException extends WebApplicationException  {
 	

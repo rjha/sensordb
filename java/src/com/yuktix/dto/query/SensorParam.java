@@ -1,4 +1,5 @@
-package com.yuktix.dto;
+package com.yuktix.dto.query;
+
 
 /* 
  * @todo add json input validation using 

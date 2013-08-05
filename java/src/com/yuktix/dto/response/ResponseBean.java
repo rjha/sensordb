@@ -1,4 +1,4 @@
-package com.yuktix.dto;
+package com.yuktix.dto.response;
 
 
 public class ResponseBean {
