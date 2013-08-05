@@ -25,7 +25,7 @@ import com.yuktix.util.Log;
 	    	// @todo - jersey exception contains stack trace
 	    	
 	    	if(ex instanceof org.codehaus.jackson.JsonProcessingException) {
-	    		message = String.format("Json parsing error : %s ", ex.getMessage());
+	    		message = String.format("malformed json; json processing error");
 	    	}
 	    	
 	    	if(ex instanceof org.glassfish.jersey.server.ParamException) {
