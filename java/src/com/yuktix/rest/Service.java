@@ -14,11 +14,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.yuktix.data.Provision;
 import com.yuktix.dto.response.* ;
 import com.yuktix.dto.provision.* ;
 import com.yuktix.dto.query.* ;
+import com.yuktix.rest.exception.RestException;
 import com.yuktix.tsdb.*;
-
 
 
 @Path("/v1")
@@ -32,7 +33,9 @@ public class Service {
 	public ResponseBean addDataPoint(@QueryParam("token") String token,DataPointParam dp) {
 		Store tsdbStore = new Store() ;
 		tsdbStore.addDataPoint(dp);
-		ResponseBean bean = new ResponseBean(200,"success");
+		ResponseBean bean = new ResponseBean();
+		bean.setCode(200);
+		bean.add("message", "success");
 		return bean ;
 	}
 	
@@ -64,14 +67,31 @@ public class Service {
 	
 	@POST
 	@Path("/account/add")
-	public void addAccount(AccountParam param) {
-		 
+	public ResponseBean addAccount(AccountParam param) {
+		
+		// empty POST data means null param
+		if(param == null) {
+			throw new RestException("wrong input; parameter is null");
+		}
+		
+		String accountId = Provision.addAccount(param);
+		System.out.println(param.getName());
+		ResponseBean bean = new ResponseBean();
+		bean.setCode(200);
+		bean.add("accountId", accountId);
+		bean.add("message","success");
+		return bean ;
 	}
 	
 	@POST
 	@Path("/project/add")
-	public void addProject(SensorParam param) {
-	 
+	public ResponseBean addProject(ProjectParam param) {
+		String projectId = Provision.addProject(param);
+		ResponseBean bean = new ResponseBean();
+		bean.setCode(200);
+		bean.add("projectId", projectId);
+		bean.add("message","success");
+		return bean ;
 	}
 	
 	@POST

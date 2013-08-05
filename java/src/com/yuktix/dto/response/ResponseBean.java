@@ -1,18 +1,14 @@
 package com.yuktix.dto.response;
 
+import java.util.HashMap;
 
 public class ResponseBean {
 	
 	private int code ;
-	private String response ;
+	private HashMap<String,String> response ;
 	
 	public ResponseBean() {
-		
-	}
-	
-	public ResponseBean(int code, String response) {
-		this.code = code ;
-		this.response = response ;
+		response = new HashMap<String,String>();
 	}
 	
 	public int getCode() {
@@ -23,12 +19,16 @@ public class ResponseBean {
 		this.code = code;
 	}
 	
-	public String getResponse() {
+	public HashMap<String,String> getResponse() {
 		return response;
 	}
 	
-	public void setResponse(String response) {
-		this.response = response;
+	public void setResponse(HashMap<String, String> map) {
+		this.response = map;
+	}
+	
+	public void add(String key, String value) {
+		this.response.put(key, value);
 	}
 	
 }
