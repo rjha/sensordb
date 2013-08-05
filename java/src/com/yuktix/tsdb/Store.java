@@ -43,6 +43,10 @@ public class Store {
 			TableEntity entity ;
 			TableBatchOperation operation = new TableBatchOperation();
 			
+			// get rollup buckets for this project
+			Rollup rollup = new Rollup(dp.getProjectId());
+			RollupOperation oprollup = new RollupOperation();
+			
 			while (readings.hasNext()) {
 				reading = readings.next();
 				data = new HashMap<String, EntityProperty>();
@@ -69,10 +73,14 @@ public class Store {
 				// # one entity - can include once only
 				operation.insert(entity);
 				
+				// Add to rollup operation
+				oprollup.insert(reading.getName(),reading.getValue());
+				
 			}
 			
 			CloudTableClient client = Table.getInstance();
 			client.execute("test", operation);
+			rollup.execute(oprollup);
 			
 		} catch (Exception ex) {
 			Log.error("error in tsdb store",ex);

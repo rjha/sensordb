@@ -8,7 +8,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageCredentials;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsAccountAndKey;
 import com.microsoft.windowsazure.services.table.client.CloudTableClient;
 import com.yuktix.exception.ServiceIOException;
-import com.yuktix.rest.exception.RestException;
 import com.yuktix.util.Log;
 
 public class Table {
