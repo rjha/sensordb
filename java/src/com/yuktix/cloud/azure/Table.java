@@ -7,53 +7,41 @@ import com.microsoft.windowsazure.services.core.storage.CloudStorageAccount;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentials;
 import com.microsoft.windowsazure.services.core.storage.StorageCredentialsAccountAndKey;
 import com.microsoft.windowsazure.services.table.client.CloudTableClient;
+import com.yuktix.exception.ServiceIOException;
+import com.yuktix.rest.exception.RestException;
 import com.yuktix.util.Log;
 
 public class Table {
-
-	private static final Table _instance = new Table();
-	private CloudTableClient client;
-
-	public static Table getInstance() {
-		return _instance;
-	}
-
-	public CloudTableClient getConnection() throws Exception {
-		// is client null?
-		if(client == null) {
-			// @todo - when client is null, all subsequent requests will return error
-			// we would like to build a retry-logic inside this client after a timeout
-			// @todo read error messages from a bundle
-			throw new Exception("error :: azure cloud table client is not initialized") ;
-		}
-		
-		return client;
-	}
-
-	public Table() {
-		boolean done = false ;
+	
+	/*
+	 * As per MSDN - instance members of CloudStorageAccount and CloudTableClient
+	 * are not thread safe. We should not share an static instance of resources.
+	 * The downside is performance overhead of creation on each thread
+	 * (which is said to be negligible as each request will open an HTTP connection
+	 * anyway)
+	 * 
+	 * 
+	 */
+	public static CloudTableClient getInstance() throws ServiceIOException {
 		
 		try {
+			
 			ResourceBundle bundle = ResourceBundle.getBundle("sensordb",Locale.US);
 			String accountName = bundle.getString("azure.account.name");
 			String accountKey = bundle.getString("azure.account.key");
 			StorageCredentials credentials = new StorageCredentialsAccountAndKey(accountName, accountKey);
 			CloudStorageAccount storageAccount = new CloudStorageAccount(credentials);
-			this.client = storageAccount.createCloudTableClient();
-			// timeout - 6 seconds
-			this.client.setTimeoutInMs(6000);
-			done = true ;
+			CloudTableClient client = storageAccount.createCloudTableClient();
+			return client ;
 			
 		} catch (Exception ex) {
-			this.client = null; 
+			
 			// log exceptions
 			String message  = "Error initializing Azure table service" ;
 			Log.error(message, ex);
+			throw new ServiceIOException(message);
 
-		} finally {
-			if(!done)
-				this.client = null;
 		}
 	}
-
+	
 }

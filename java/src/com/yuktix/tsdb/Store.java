@@ -8,7 +8,7 @@ import com.microsoft.windowsazure.services.table.client.DynamicTableEntity;
 import com.microsoft.windowsazure.services.table.client.EntityProperty;
 import com.microsoft.windowsazure.services.table.client.TableBatchOperation;
 import com.microsoft.windowsazure.services.table.client.TableEntity;
-import com.yuktix.dto.DataPoint;
+import com.yuktix.dto.DataPointParam;
 import com.yuktix.dto.NameValuePair;
 import com.yuktix.dto.Reading;
 import com.yuktix.rest.exception.RestException;
@@ -19,9 +19,10 @@ import com.yuktix.cloud.azure.Table;
 public class Store {
 
 	
-	public void addDataPoint(DataPoint dp) {
+	public void addDataPoint(DataPointParam dp) {
+		
 		try {
-			
+
 			// partition key is fixed
 			String partitionKey = dp.getProjectId() + ";"+ dp.getSerialNumber();
 			String rowKey = null ;
@@ -46,10 +47,12 @@ public class Store {
 				reading = readings.next();
 				data = new HashMap<String, EntityProperty>();
 				
+				// @todo - Add to alerts table if above threshold
+				// @todo - Add to rollup table
 				data.put(reading.getName(), new EntityProperty(reading.getValue()));
 				data.put("client_ts", new EntityProperty(reading.getTimestamp()));
 				
-				// meta data fixed for one batch of sensor readings
+				// fixed meta data for one batch of sensor readings
 				nvps = dp.getMetaData().iterator();
 				while (nvps.hasNext()) {
 					nvp = nvps.next();
@@ -68,7 +71,7 @@ public class Store {
 				
 			}
 			
-			CloudTableClient client = Table.getInstance().getConnection();
+			CloudTableClient client = Table.getInstance();
 			client.execute("test", operation);
 			
 		} catch (Exception ex) {

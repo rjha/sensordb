@@ -6,7 +6,7 @@ import java.util.List;
 // @todo add json input validation using json-schema
 // or a bean validation framework like hibernate validator
 
-public class DataPoint {
+public class DataPointParam {
 	private String serialNumber ;
 	private String projectId ;
 	private List<Reading> readings ;

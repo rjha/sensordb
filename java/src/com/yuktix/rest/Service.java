@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import com.yuktix.dto.DataPoint;
+import com.yuktix.dto.DataPointParam;
 import com.yuktix.dto.ResponseBean;
 import com.yuktix.dto.ResultBean;
 import com.yuktix.dto.SensorParam;
@@ -30,7 +30,7 @@ public class Service {
 
 	@POST
 	@Path("/datapoint")
-	public ResponseBean addDataPoint(@QueryParam("token") String token,DataPoint dp) {
+	public ResponseBean addDataPoint(@QueryParam("token") String token,DataPointParam dp) {
 		Store tsdbStore = new Store() ;
 		tsdbStore.addDataPoint(dp);
 		ResponseBean bean = new ResponseBean(200,"success");

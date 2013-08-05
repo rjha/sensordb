@@ -1,4 +1,4 @@
-package com.yuktix.model;
+package com.yuktix.model.provision;
 
 import java.util.HashMap ;
 

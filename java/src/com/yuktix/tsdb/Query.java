@@ -29,7 +29,7 @@ public class Query {
 		EntityProperty ep;
 		int counter = 0;
 		
-		CloudTableClient client = Table.getInstance().getConnection();
+		CloudTableClient client = Table.getInstance();
 		Iterator<DynamicTableEntity> rows = client.execute(query).iterator();
 
 		while (rows.hasNext()) {

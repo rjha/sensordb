@@ -39,7 +39,7 @@ public class DeviceServiceImpl {
 			
 			// parse json
 			ObjectMapper mapper = new ObjectMapper();
-			com.yuktix.dto.Device device = mapper.readValue(json, com.yuktix.dto.Device.class) ;
+			com.yuktix.model.provision.Device device = mapper.readValue(json, com.yuktix.model.provision.Device.class) ;
 			// @todo input check
 			// @todo send device to azure table service
 			

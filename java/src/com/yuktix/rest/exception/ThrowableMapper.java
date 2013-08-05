@@ -18,7 +18,7 @@ import com.yuktix.util.Log;
 	    	
 	    	Log.error(ex.getMessage(), ex);
 	    	String message = "Internal service error" ;
-	    	
+	    	Status status = Status.INTERNAL_SERVER_ERROR ;
 	    	// jackson json parsing exception
 	    	// @todo - jersey exception contains stack trace
 	    	
@@ -30,8 +30,13 @@ import com.yuktix.util.Log;
 	    		message = String.format("Bad request parameter : %s ", ((org.glassfish.jersey.server.ParamException) ex).getParameterName());
 	    	}
 	    	
-	        return Response.status(Status.INTERNAL_SERVER_ERROR)
-	        		.entity(new ErrorBean(Status.INTERNAL_SERVER_ERROR.getStatusCode(),message))
+	    	if(ex instanceof com.yuktix.exception.ServiceIOException) {
+	    		message = ex.getMessage();
+	    		status = Status.SERVICE_UNAVAILABLE ;
+	    	}
+	    	
+	        return Response.status(status)
+	        		.entity(new ErrorBean(status.getStatusCode(),message))
 	        		 .type(MediaType.APPLICATION_JSON)
 	        		.build();
 	    }
