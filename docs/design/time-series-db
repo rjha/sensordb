@@ -70,15 +70,20 @@ sensors can have different frequency of sending data. so we should be able to sa
 give me last N data points together with getting data in a time window
 (using WMI interface from a windows machine - sending CPU utilization every millisecond)
 
- 
 
 #query:1
 get last N data points for variable X from a sensor
 #query:2
 get data for variable X from a sensor in a given time window.	
-question : what if a given time window can contain thousands of data points?
+#question : what if a given time window can contain thousands of data points?
+#question : how to determine the step size?
+    e.g. for day as interval use hour as step size etc.
+    e.g. use user supplied step size
+    if step results in too many points - give up with error.
+
 #query:3
 get latest value reported from a sensor
+maintain in meta data
 #query:4
 get X value from all sensors having a particular value of a tag e.g. 
 		+ from a specific user in a company
@@ -88,6 +93,9 @@ get X value from all sensors having a particular value of a tag e.g.
 get max value for a day
 how to do that?
 + Day rollup for a particular sensor
+get max from latest day rollup
+#concept
+ - today/tomorrow/last week/ last month?
 
 #query:6
 fetch data for a time window in custom steps
