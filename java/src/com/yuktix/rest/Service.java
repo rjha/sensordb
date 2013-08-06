@@ -55,7 +55,6 @@ public class Service {
 		return bean ;
 	}
 	
-	
 	@POST
 	@Path("/account/add")
 	public MapResponseBean addAccount(AccountParam param) {
@@ -122,9 +121,20 @@ public class Service {
 	}
 	
 	@GET
+	@Path("/account/list")
+	public ResponseBean getAccounts() {
+		
+		List<HashMap<String, String>> data = Provision.getAccounts() ;
+		ResponseBean bean = new ResponseBean(200,data);
+		return bean ;
+	}
+	
+	@GET
 	@Path("/project/list")
 	public ResponseBean getProjects() {
-		ResponseBean bean = new ResponseBean(200,new Object());
+		
+		List<HashMap<String, String>> data = Provision.getProjects() ;
+		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
 	}
 }

@@ -1,15 +1,20 @@
 package com.yuktix.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
+import com.microsoft.windowsazure.services.core.storage.ResultContinuation;
+import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.table.client.CloudTableClient;
 import com.microsoft.windowsazure.services.table.client.DynamicTableEntity;
 import com.microsoft.windowsazure.services.table.client.EntityProperty;
 import com.microsoft.windowsazure.services.table.client.TableBatchOperation;
 import com.microsoft.windowsazure.services.table.client.TableEntity;
 import com.microsoft.windowsazure.services.table.client.TableOperation;
+import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.microsoft.windowsazure.services.table.client.TableResult;
 import com.yuktix.cloud.azure.Table;
 import com.yuktix.dto.provision.AccountParam;
@@ -152,4 +157,99 @@ public class Provision {
 		}
 	}
 
+	public static List<HashMap<String, String>> getProjects() {
+		
+		try {
+			
+			// segmented query to fetch 25 at a time
+			CloudTableClient client = Table.getInstance();
+			String partitionKey = "sensordb;project" ;
+			String where_condition = String.format("(PartitionKey eq '%s')",partitionKey);
+			TableQuery<DynamicTableEntity> myQuery = TableQuery
+					.from("test", DynamicTableEntity.class)
+					.where(where_condition).take(25);
+			
+			ResultContinuation continuationToken = new ResultContinuation();
+			ResultSegment<DynamicTableEntity> response = client.executeSegmented(myQuery, null) ;
+			
+			
+			continuationToken = response.getContinuationToken() ;
+			if(continuationToken != null)
+				System.out.println("marker :" + continuationToken.getNextMarker());
+			
+			HashMap<String, String> datum;
+			List<HashMap<String, String>> series = new ArrayList<HashMap<String, String>>();
+			DynamicTableEntity row;
+			EntityProperty ep;
+			
+			Iterator<DynamicTableEntity>rows = response.getResults().iterator() ;
+			
+			while(rows.hasNext()) {
+				row = rows.next() ;
+				HashMap<String, EntityProperty> map = row.getProperties();
+
+				datum = new HashMap<String, String>();
+				for (String key : map.keySet()) {
+					ep = map.get(key);
+					datum.put(key, ep.getValueAsString());
+				}
+				
+				series.add(datum);
+			}
+			
+			return series ;
+			
+		} catch(Exception ex) {
+			Log.error(ex);
+			throw new RestException("error retrieving project list");
+		}
+	}
+	
+	public static List<HashMap<String, String>> getAccounts() {
+		
+		try {
+			
+			// segmented query to fetch 25 at a time
+			CloudTableClient client = Table.getInstance();
+			String partitionKey = "sensordb;account" ;
+			String where_condition = String.format("(PartitionKey eq '%s')",partitionKey);
+			TableQuery<DynamicTableEntity> myQuery = TableQuery
+					.from("test", DynamicTableEntity.class)
+					.where(where_condition).take(25);
+			
+			ResultContinuation continuationToken = new ResultContinuation();
+			ResultSegment<DynamicTableEntity> response = client.executeSegmented(myQuery, null) ;
+			
+			
+			continuationToken = response.getContinuationToken() ;
+			if(continuationToken != null)
+				System.out.println("marker :" + continuationToken.getNextMarker());
+			
+			HashMap<String, String> datum;
+			List<HashMap<String, String>> series = new ArrayList<HashMap<String, String>>();
+			DynamicTableEntity row;
+			EntityProperty ep;
+			
+			Iterator<DynamicTableEntity>rows = response.getResults().iterator() ;
+			
+			while(rows.hasNext()) {
+				row = rows.next() ;
+				HashMap<String, EntityProperty> map = row.getProperties();
+
+				datum = new HashMap<String, String>();
+				for (String key : map.keySet()) {
+					ep = map.get(key);
+					datum.put(key, ep.getValueAsString());
+				}
+				
+				series.add(datum);
+			}
+			
+			return series ;
+			
+		} catch(Exception ex) {
+			Log.error(ex);
+			throw new RestException("error retrieving project list");
+		}
+	}
 }
