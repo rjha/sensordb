@@ -1,0 +1,51 @@
+
+# architecture requirements
+After a sensor node has sent us a datapoint, we want to do
+ + consolidation/ rollup
+ + computations
+ + write more entities based on variables/ group criteria 
+
+it would be better to write the data ACK into some queue from
+where jobs can receive and process the sensor data.
+
+# long running java process
+(essentially jobs that can process what is in azure service bus or azure queue)
+supervisord
+multi agent system
+glassfish LRWP agent
+put java startup script into init.d
+Resque port?
+
+
+# azure service bus 
+FIFO queue
+competing consumer pattern 
+	regardless of consumer computing capacity, they read 
+	messages at their own rate.
+
+#questioins
+	- what is the max. size of queue?
+	- at what rate can we input messages into this queue?
+	- at what rate can we extract?
+	- can we monitor the queue to see the pileup?
+	- can I get an alert on pileup?
+
+
+# on the message bus - instead of data - send commands
+
+# azure queue vs. service bug
+ - blocking getMessage available?
+ - locking of message by a consumer when it is being processed?
+ - FIFO guarantee required? 
+
+# producers - just use java sdk
+# consumers - that is tricky
+ + how to create long running java applications?
+ + how to do blocking consumers?
+
+# service bus AMQP
+service bus + AMQP + jms library?
+	
+
+
+

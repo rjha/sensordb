@@ -1,0 +1,13 @@
+
+# problem - rollup - cassandra metric style
+One idea is to keep rollup of data into memory and flush it to 
+disk when next rollup point has arrived. Problem with keeping things in memory
+is that individual web app may have their own JVM and a project may be sending 
+data to different web apps and hence different JVM.
+
+One way around is to keep temporary rollup data in a memory store accessible
+from all nodes across the network (that is backed to disk) - e.g. redis
+
+finally, we want a scale out architecture.
+
+
