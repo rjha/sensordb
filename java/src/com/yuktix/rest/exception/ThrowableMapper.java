@@ -20,7 +20,8 @@ import com.yuktix.util.Log;
 	    	
 	    	Log.error(ex.getMessage(), ex);
 	    	String message = "Internal service error" ;
-	    	Status status = Status.INTERNAL_SERVER_ERROR ;
+	    	int code = Status.INTERNAL_SERVER_ERROR.getStatusCode() ;
+	    	
 	    	// jackson json parsing exception
 	    	// @todo - jersey exception contains stack trace
 	    	
@@ -34,11 +35,17 @@ import com.yuktix.util.Log;
 	    	
 	    	if(ex instanceof com.yuktix.exception.ServiceIOException) {
 	    		message = ex.getMessage();
-	    		status = Status.SERVICE_UNAVAILABLE ;
+	    		code = Status.SERVICE_UNAVAILABLE.getStatusCode() ;
 	    	}
 	    	
-	        return Response.status(status)
-	        		.entity(new ErrorBean(status.getStatusCode(),message))
+	    	if(ex instanceof javax.ws.rs.ClientErrorException) {
+	    		message = ex.getMessage();
+	    		code  = ((javax.ws.rs.ClientErrorException) ex).getResponse().getStatus();
+	    		
+	    	}
+	    	
+	        return Response.status(code)
+	        		.entity(new ErrorBean(code,message))
 	        		 .type(MediaType.APPLICATION_JSON)
 	        		.build();
 	    }

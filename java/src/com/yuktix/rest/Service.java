@@ -1,7 +1,5 @@
 package com.yuktix.rest;
 
-
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +19,6 @@ import com.yuktix.dto.query.* ;
 import com.yuktix.rest.exception.RestException;
 import com.yuktix.tsdb.*;
 
-
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,31 +27,72 @@ public class Service {
 
 	@POST
 	@Path("/datapoint")
-	public ResponseBean addDataPoint(@QueryParam("token") String token,DataPointParam dp) {
+	public MapResponseBean addDataPoint(@QueryParam("token") String token,DataPointParam dp) {
+		null_check(dp);
 		Store tsdbStore = new Store() ;
 		tsdbStore.addDataPoint(dp);
-		ResponseBean bean = new ResponseBean();
-		bean.setCode(200);
-		bean.add("message", "success");
+		MapResponseBean bean = new MapResponseBean(200,"success");
 		return bean ;
 	}
 	
 	@POST
 	@Path("/query/sensor/latest")
-	public ResultBean getSensorDataPoint(SensorParam param) {
+	public ResponseBean getSensorDataPoint(SensorParam param) {
+		null_check(param);
 		Query tsdbQuery = new Query() ;
 		List<HashMap<String,String>> response = tsdbQuery.getDataPoint(param);
-		ResultBean bean = new ResultBean(200,response);
+		ResponseBean bean = new ResponseBean(200,response);
 		return bean ;
 	}
 	
 	@POST
 	@Path("/query/sensor/time")
-	public ResultBean getSensorDataInTimeSlice(SensorParam param) {
+	public ResponseBean getSensorDataInTimeSlice(SensorParam param) {
+		null_check(param);
 		Query tsdbQuery = new Query() ;
 		List<HashMap<String,String>> data = tsdbQuery.getInTimeSlice(param);
-		ResultBean bean = new ResultBean(200,data);
+		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
+	}
+	
+	
+	@POST
+	@Path("/account/add")
+	public MapResponseBean addAccount(AccountParam param) {
+		null_check(param);
+		String accountId = Provision.addAccount(param);
+		MapResponseBean bean = new MapResponseBean(200,"success");
+		bean.add("accountId", accountId);
+		return bean ;
+	}
+	
+	@POST
+	@Path("/project/add")
+	public MapResponseBean addProject(ProjectParam param) {
+		null_check(param);
+		String projectId = Provision.addProject(param);
+		MapResponseBean bean = new MapResponseBean(200,"success");
+		bean.add("projectId", projectId);
+		return bean ;
+	}
+	
+	@POST
+	@Path("/device/add")
+	public void addDevice(SensorParam param) {
+		null_check(param);
+	}
+	
+	@POST
+	@Path("/sensor/add")
+	public void addSensor(SensorParam param) {
+		null_check(param);
+	}
+	
+	private void null_check(Object param) {
+		// empty POST data means null param
+		if(param == null) {
+			throw new RestException("wrong input; parameter is null");
+		}
 	}
 	
 	@GET
@@ -65,45 +103,28 @@ public class Service {
 		return echo ;
 	}
 	
-	@POST
-	@Path("/account/add")
-	public ResponseBean addAccount(AccountParam param) {
-		
-		// empty POST data means null param
-		if(param == null) {
-			throw new RestException("wrong input; parameter is null");
-		}
-		
-		String accountId = Provision.addAccount(param);
-		System.out.println(param.getName());
-		ResponseBean bean = new ResponseBean();
-		bean.setCode(200);
-		bean.add("accountId", accountId);
-		bean.add("message","success");
+	@GET
+	@Path("/project/{projectId}")
+	public ResponseBean getProjectOnId(@PathParam("projectId") String projectId) {
+		null_check(projectId);
+		HashMap<String,String> map = Provision.getProjectOnId(projectId);
+		ResponseBean bean = new ResponseBean(200,map);
 		return bean ;
 	}
 	
-	@POST
-	@Path("/project/add")
-	public ResponseBean addProject(ProjectParam param) {
-		String projectId = Provision.addProject(param);
-		ResponseBean bean = new ResponseBean();
-		bean.setCode(200);
-		bean.add("projectId", projectId);
-		bean.add("message","success");
+	@GET
+	@Path("/account/{accountId}")
+	public ResponseBean getAccountOnId(@PathParam("accountId") String param) {
+		null_check(param);
+		HashMap<String,String> map = Provision.getAccountOnId(param);
+		ResponseBean bean = new ResponseBean(200,map);
 		return bean ;
 	}
 	
-	@POST
-	@Path("/device/add")
-	public void addDevice(SensorParam param) {
-		 
+	@GET
+	@Path("/project/list")
+	public ResponseBean getProjects() {
+		ResponseBean bean = new ResponseBean(200,new Object());
+		return bean ;
 	}
-	
-	@POST
-	@Path("/sensor/add")
-	public void addSensor(SensorParam param) {
-		
-	}
-	
 }

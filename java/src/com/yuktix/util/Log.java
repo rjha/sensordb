@@ -13,7 +13,11 @@ public class Log {
 	public static void error(String message, Throwable ex) {
 		logger.log(Level.SEVERE, message,ex);
 	}
-
+	
+	public static void error(Throwable ex) {
+		logger.log(Level.SEVERE, ex.getMessage(),ex);
+	}
+	
 	public static void info(String message) {
 		logger.log(Level.CONFIG, message);
 	}
