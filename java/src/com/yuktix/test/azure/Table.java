@@ -7,7 +7,7 @@ import java.util.Iterator;
 import com.microsoft.windowsazure.services.core.storage.*;
 import com.microsoft.windowsazure.services.table.client.*;
 
-
+// depends on common-lang;azure-api-0.4.4.jar
 public class Table {
 
 	public static void main(String [] args) {
