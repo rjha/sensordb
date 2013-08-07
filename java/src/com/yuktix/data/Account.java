@@ -11,8 +11,8 @@ import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.table.client.CloudTableClient;
 import com.microsoft.windowsazure.services.table.client.DynamicTableEntity;
 import com.microsoft.windowsazure.services.table.client.EntityProperty;
-import com.microsoft.windowsazure.services.table.client.TableBatchOperation;
 import com.microsoft.windowsazure.services.table.client.TableEntity;
+import com.microsoft.windowsazure.services.table.client.TableOperation;
 import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.yuktix.cloud.azure.Table;
 import com.yuktix.dto.provision.AccountParam;
@@ -38,10 +38,11 @@ public class Account {
 			// first is optimized for query by guid
 			// second is optimized for query by name
 			
-			String partitionKey = "sensordb;account";
+			String guidPartitionKey = "sensordb;account;guid";
+			String namePartitionKey = "sensordb;account;name" ;
+			
 			String guid = UUID.randomUUID().toString();
-			String guidRowKey = "guid;" + guid ;
-			String nameRowKey = "name;" + StringUtil.getCanonicalName(param.getName()) ;
+			String canonicalName = StringUtil.getCanonicalName(param.getName()) ;
 			
 			// azure stuff
 			TableEntity entity1, entity2 ;
@@ -51,19 +52,18 @@ public class Account {
 			data.put("accountId",new EntityProperty(guid));
 			
 			entity1 = new DynamicTableEntity(data);
-			entity1.setPartitionKey(partitionKey);
-			entity1.setRowKey(nameRowKey);
+			entity1.setPartitionKey(namePartitionKey);
+			entity1.setRowKey(canonicalName);
+			TableOperation operation1 = TableOperation.insert(entity1);
 			
 			entity2 = new DynamicTableEntity(data);
-			entity2.setPartitionKey(partitionKey);
-			entity2.setRowKey(guidRowKey);
-			
-			TableBatchOperation operation = new TableBatchOperation();
-			operation.insert(entity1);
-			operation.insert(entity2);
+			entity2.setPartitionKey(guidPartitionKey);
+			entity2.setRowKey(guid);
+			TableOperation operation2 = TableOperation.insert(entity2);
 			
 			CloudTableClient client = Table.getInstance();
-			client.execute("test", operation);
+			client.execute("test", operation1);
+			client.execute("test", operation2);
 			
 			return guid ;
 			
@@ -77,9 +77,8 @@ public class Account {
 		
 		try{
 			
-			String partitionKey = "sensordb;account";
-			String rowKey = "guid;" + guid ;
-			HashMap<String,String> map = Common.getEntity("test",partitionKey,rowKey);
+			String partitionKey = "sensordb;account;guid";
+			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
 		} catch(Exception ex) {
@@ -94,8 +93,8 @@ public class Account {
 			
 			// segmented query
 			CloudTableClient client = Table.getInstance();
-			String partitionKey = "sensordb;account" ;
-			String where_condition = String.format("(PartitionKey eq '%s') and (RowKey gt '%s') ",partitionKey, "guid;");
+			String partitionKey = "sensordb;account;name" ;
+			String where_condition = String.format("(PartitionKey eq '%s') ",partitionKey);
 			TableQuery<DynamicTableEntity> myQuery = TableQuery
 					.from("test", DynamicTableEntity.class)
 					.where(where_condition).take(10);

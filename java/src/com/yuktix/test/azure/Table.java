@@ -12,9 +12,9 @@ public class Table {
 
 	public static void main(String[] args) {
 		
-		// Table.createTestTable();
-		 Table.listTables();
-		// Table.deleteTestTable();
+		Table.createTestTable();
+		Table.listTables();
+		//Table.deleteTestTable();
 	}
 
 	public static void deleteTestTable() {
