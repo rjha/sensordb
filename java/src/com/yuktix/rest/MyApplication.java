@@ -10,6 +10,7 @@ public class MyApplication extends ResourceConfig{
 		register(com.yuktix.rest.Service.class);
 		register(JacksonFeature.class);
 		register(com.yuktix.rest.exception.ThrowableMapper.class);
+		register(com.yuktix.rest.MyObjectMapperProvider.class);
 		
 	}
 }
