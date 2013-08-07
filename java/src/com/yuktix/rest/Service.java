@@ -115,11 +115,11 @@ public class Service {
 		return bean ;
 	}
 	
-	@GET
+	@POST
 	@Path("/account/list")
-	public ResponseBean getAccounts() {
+	public ResponseBean getAccounts(ScrollingParam param) {
 		
-		List<HashMap<String, String>> data = Account.list() ;
+		ResultSet data = Account.list(param) ;
 		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
 	}

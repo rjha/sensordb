@@ -14,10 +14,13 @@ import com.microsoft.windowsazure.services.table.client.EntityProperty;
 import com.microsoft.windowsazure.services.table.client.TableBatchOperation;
 import com.microsoft.windowsazure.services.table.client.TableEntity;
 import com.microsoft.windowsazure.services.table.client.TableQuery;
-
 import com.yuktix.cloud.azure.Table;
 import com.yuktix.dto.provision.AccountParam;
+import com.yuktix.dto.query.PaginationParam;
+import com.yuktix.dto.query.ResultSet;
+import com.yuktix.dto.query.ScrollingParam;
 import com.yuktix.rest.exception.RestException;
+import com.yuktix.util.BeanUtil;
 import com.yuktix.util.Log;
 import com.yuktix.util.StringUtil;
 
@@ -85,24 +88,36 @@ public class Account {
 		}
 	}
 	
-	public static List<HashMap<String, String>> list() {
+	public static ResultSet list(ScrollingParam param) {
 		
 		try {
 			
 			// segmented query
 			CloudTableClient client = Table.getInstance();
 			String partitionKey = "sensordb;account" ;
-			String where_condition = String.format("(PartitionKey eq '%s') ",partitionKey);
+			String where_condition = String.format("(PartitionKey eq '%s') and (RowKey gt '%s') ",partitionKey, "guid;");
 			TableQuery<DynamicTableEntity> myQuery = TableQuery
 					.from("test", DynamicTableEntity.class)
 					.where(where_condition).take(10);
 			
-			ResultContinuation continuationToken = new ResultContinuation();
-			ResultSegment<DynamicTableEntity> response = client.executeSegmented(myQuery, continuationToken) ;
+			ResultContinuation continuationToken = BeanUtil.getContinuationToken(param);
+			PaginationParam pagination = new PaginationParam();
 			
+			if(continuationToken != null) {
+				pagination.setPrevious_partition(param.getPartition_key());
+				pagination.setPrevious_row(param.getRow_key());
+				
+			}
+			
+			ResultSegment<DynamicTableEntity> response = client.executeSegmented(myQuery, new MyEntityResolver(), continuationToken) ;
+			// next continuation token
 			continuationToken = response.getContinuationToken() ;
-			if(continuationToken != null)
-				System.out.println("marker :" + continuationToken.getNextMarker());
+			
+			if(continuationToken != null) {
+				
+				pagination.setNext_partition(continuationToken.getNextPartitionKey());
+				pagination.setNext_row(continuationToken.getNextRowKey());
+			}
 			
 			HashMap<String, String> datum;
 			List<HashMap<String, String>> series = new ArrayList<HashMap<String, String>>();
@@ -124,7 +139,7 @@ public class Account {
 				series.add(datum);
 			}
 			
-			return series ;
+			return new ResultSet(series,pagination) ;
 			
 		} catch(Exception ex) {
 			Log.error(ex);
