@@ -5,8 +5,8 @@ public class ArgumentException extends RestException  {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public ArgumentException(String param) {
-		super(Status.BAD_REQUEST,String.format("Bad argument : %s ",param));
+	public ArgumentException(String message) {
+		super(Status.BAD_REQUEST,message);
      }
  
      public ArgumentException(String param,String message) {

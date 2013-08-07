@@ -12,12 +12,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import com.yuktix.data.Provision;
+import com.yuktix.data.Account;
+import com.yuktix.data.Project;
 import com.yuktix.dto.response.* ;
 import com.yuktix.dto.provision.* ;
 import com.yuktix.dto.query.* ;
-import com.yuktix.rest.exception.RestException;
 import com.yuktix.tsdb.*;
+import com.yuktix.util.BeanUtil;
 
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -27,10 +28,10 @@ public class Service {
 
 	@POST
 	@Path("/datapoint")
-	public MapResponseBean addDataPoint(@QueryParam("token") String token,DataPointParam dp) {
-		null_check(dp);
+	public MapResponseBean addDataPoint(@QueryParam("token") String token,DataPointParam param) {
+		BeanUtil.null_check(param);
 		Store tsdbStore = new Store() ;
-		tsdbStore.addDataPoint(dp);
+		tsdbStore.addDataPoint(param);
 		MapResponseBean bean = new MapResponseBean(200,"success");
 		return bean ;
 	}
@@ -38,7 +39,7 @@ public class Service {
 	@POST
 	@Path("/query/sensor/latest")
 	public ResponseBean getSensorDataPoint(SensorParam param) {
-		null_check(param);
+		BeanUtil.null_check(param);
 		Query tsdbQuery = new Query() ;
 		List<HashMap<String,String>> response = tsdbQuery.getDataPoint(param);
 		ResponseBean bean = new ResponseBean(200,response);
@@ -48,7 +49,7 @@ public class Service {
 	@POST
 	@Path("/query/sensor/time")
 	public ResponseBean getSensorDataInTimeSlice(SensorParam param) {
-		null_check(param);
+		BeanUtil.null_check(param);
 		Query tsdbQuery = new Query() ;
 		List<HashMap<String,String>> data = tsdbQuery.getInTimeSlice(param);
 		ResponseBean bean = new ResponseBean(200,data);
@@ -58,8 +59,8 @@ public class Service {
 	@POST
 	@Path("/account/add")
 	public MapResponseBean addAccount(AccountParam param) {
-		null_check(param);
-		String accountId = Provision.addAccount(param);
+		BeanUtil.null_check(param);
+		String accountId = Account.add(param);
 		MapResponseBean bean = new MapResponseBean(200,"success");
 		bean.add("accountId", accountId);
 		return bean ;
@@ -68,8 +69,8 @@ public class Service {
 	@POST
 	@Path("/project/add")
 	public MapResponseBean addProject(ProjectParam param) {
-		null_check(param);
-		String projectId = Provision.addProject(param);
+		BeanUtil.null_check(param);
+		String projectId = Project.add(param);
 		MapResponseBean bean = new MapResponseBean(200,"success");
 		bean.add("projectId", projectId);
 		return bean ;
@@ -78,21 +79,15 @@ public class Service {
 	@POST
 	@Path("/device/add")
 	public void addDevice(SensorParam param) {
-		null_check(param);
+		BeanUtil.null_check(param);
 	}
 	
 	@POST
 	@Path("/sensor/add")
 	public void addSensor(SensorParam param) {
-		null_check(param);
+		BeanUtil.null_check(param);
 	}
 	
-	private void null_check(Object param) {
-		// empty POST data means null param
-		if(param == null) {
-			throw new RestException("wrong input; parameter is null");
-		}
-	}
 	
 	@GET
 	@Path("/echo/{input}")
@@ -104,9 +99,9 @@ public class Service {
 	
 	@GET
 	@Path("/project/{projectId}")
-	public ResponseBean getProjectOnId(@PathParam("projectId") String projectId) {
-		null_check(projectId);
-		HashMap<String,String> map = Provision.getProjectOnId(projectId);
+	public ResponseBean getProjectOnId(@PathParam("projectId") String param) {
+		BeanUtil.null_check(param);
+		HashMap<String,String> map = Project.getOnId(param);
 		ResponseBean bean = new ResponseBean(200,map);
 		return bean ;
 	}
@@ -114,8 +109,8 @@ public class Service {
 	@GET
 	@Path("/account/{accountId}")
 	public ResponseBean getAccountOnId(@PathParam("accountId") String param) {
-		null_check(param);
-		HashMap<String,String> map = Provision.getAccountOnId(param);
+		BeanUtil.null_check(param);
+		HashMap<String,String> map = Account.getOnId(param);
 		ResponseBean bean = new ResponseBean(200,map);
 		return bean ;
 	}
@@ -124,17 +119,19 @@ public class Service {
 	@Path("/account/list")
 	public ResponseBean getAccounts() {
 		
-		List<HashMap<String, String>> data = Provision.getAccounts() ;
+		List<HashMap<String, String>> data = Account.list() ;
 		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
 	}
 	
+	/*
 	@GET
 	@Path("/project/list")
 	public ResponseBean getProjects() {
 		
-		List<HashMap<String, String>> data = Provision.getProjects() ;
-		ResponseBean bean = new ResponseBean(200,data);
-		return bean ;
-	}
+	
+	} */
+	
+	
+	
 }
