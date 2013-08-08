@@ -1,23 +1,33 @@
 package com.yuktix.dto.provision;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import com.yuktix.dto.Variable;
 
 public class DeviceParam {
 	
 	private String name ;
 	private String manufacturer ;
-	private String version;
 	private String description ;
-	private String deviceId ;
+	
+	// A device is attached to an account
+	private String accountId ;
+	
+	// the point of storing variables during provisioning 
+	// is that we can verify that a sensor is sending back
+	// the same variables during first handshake.
 	private List<Variable> variables ;
-	private HashMap<String,String> metaData ;
 
 	public DeviceParam() {
 		
+	}
+	
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 	
 	public String getName() {
@@ -36,28 +46,12 @@ public class DeviceParam {
 		this.manufacturer = manufacturer;
 	}
 	
-	public String getVersion() {
-		return version;
-	}
-	
-	public void setVersion(String version) {
-		this.version = version;
-	}
-	
 	public String getDescription() {
 		return description;
 	}
 	
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	
-	public String getDeviceId() {
-		return deviceId;
-	}
-	
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
 	}
 	
 	public List<Variable> getVariables() {
@@ -68,14 +62,6 @@ public class DeviceParam {
 		this.variables = variables;
 	}
 	
-	public HashMap<String, String> getMetaData() {
-		return metaData;
-	}
-
-	public void setMetaData(HashMap<String, String> metaData) {
-		this.metaData = metaData;
-	}
-
 	public void setVariables(List<Variable> variables) {
 		this.variables = variables;
 	}

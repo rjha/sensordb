@@ -4,7 +4,7 @@ public class Variable {
 	
 	private String name ;
 	private String unit ;
-	private int type ;
+	private String type ;
 	private String symbol ;
 	
 	public Variable() {}
@@ -12,7 +12,7 @@ public class Variable {
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -25,20 +25,20 @@ public class Variable {
 		this.unit = unit;
 	}
 
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
 	public String getSymbol() {
 		return symbol;
 	}
 
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

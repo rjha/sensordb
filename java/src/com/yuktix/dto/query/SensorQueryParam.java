@@ -9,7 +9,7 @@ package com.yuktix.dto.query;
  * 
  */
 
-public class SensorParam {
+public class SensorQueryParam {
 	
 	private String serialNumber ;
 	private String projectId ;

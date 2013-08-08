@@ -9,56 +9,60 @@ import com.microsoft.windowsazure.services.table.client.TableEntity;
 import com.microsoft.windowsazure.services.table.client.TableOperation;
 import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.yuktix.cloud.azure.Table;
-import com.yuktix.dto.provision.ProjectParam;
+import com.yuktix.dto.provision.DeviceParam;
 import com.yuktix.dto.query.ScrollingParam;
 import com.yuktix.dto.response.ResultSet;
 import com.yuktix.rest.exception.RestException;
+import com.yuktix.util.BeanUtil;
 import com.yuktix.util.Log;
 import com.yuktix.util.StringUtil;
 
-public class Project {
+public class Device {
 	
-	public static String add(ProjectParam param) {
-		
+	public static String add(DeviceParam param) {
 		try {
 
-			String guidPartitionKey = "sensordb;project;guid";
-			String namePartitionKey = "sensordb;project;name" ;
-			String accountPartitionKey = "sensordb;project;account" ;
+			StringUtil.null_check("name",param.getName()) ;
+			StringUtil.null_check("account",param.getAccountId()) ;
+			
+			String guidPartitionKey = "sensordb;device;guid";
+			String namePartitionKey = "sensordb;device;name" ;
+			String accountPartitionKey = "sensordb;device;account" ;
+			
 			
 			String guid = Common.getGUID();
-			String canonicalName = StringUtil.getCanonicalName(param.getName());
+			String canonicalName = StringUtil.getCanonicalName(param.getName()) ;
 			
-			TableEntity entity1,entity2,entity3 ;
-						
+			// azure stuff
+			TableEntity entity1, entity2, entity3 ;
+			
 			HashMap<String, EntityProperty> data =  new HashMap<String, EntityProperty>();
 			data.put("name", new EntityProperty(param.getName()));
-			data.put("accountId", new EntityProperty(param.getAccountId()));
-			data.put("projectId",new EntityProperty(guid));
+			data.put("manufacturer", new EntityProperty(param.getManufacturer()));
+			data.put("description", new EntityProperty(param.getDescription()));
+			
+			String variables = BeanUtil.jsonEncode(param.getVariables()) ;
+			data.put("variables", new EntityProperty(variables));
+			
+			data.put("deviceId",new EntityProperty(guid));
+			data.put("accountId",new EntityProperty(param.getAccountId()));
 			
 			entity1 = new DynamicTableEntity(data);
 			entity1.setPartitionKey(guidPartitionKey);
-			// guid should be unique
 			entity1.setRowKey(guid);
+			TableOperation operation1 = TableOperation.insert(entity1);
 			
 			entity2 = new DynamicTableEntity(data);
 			entity2.setPartitionKey(namePartitionKey);
-			// two different accounts can have same project name
-			// search by project name across accounts
 			entity2.setRowKey(String.format("%s;%s",canonicalName,param.getAccountId()));
+			TableOperation operation2 = TableOperation.insert(entity2);
 			
 			entity3 = new DynamicTableEntity(data);
 			entity3.setPartitionKey(accountPartitionKey);
-			// search by accountId, sorted on name
-			// 2 different projects can have same accountId
 			entity3.setRowKey(String.format("%s;%s",param.getAccountId(),canonicalName));
-			
-			TableOperation operation1 = TableOperation.insert(entity1);
-			TableOperation operation2 = TableOperation.insert(entity2);
 			TableOperation operation3 = TableOperation.insert(entity3);
 			
 			CloudTableClient client = Table.getInstance();
-			// @todo - how to pipeline multiple operations across partitions?
 			client.execute("test", operation1);
 			client.execute("test", operation2);
 			client.execute("test", operation3);
@@ -66,9 +70,8 @@ public class Project {
 			return guid ;
 			
 		} catch (Exception ex) {
-			
 			Log.error(ex);
-			throw new RestException("error adding new project");
+			throw new RestException("error adding new device");
 		}
 	}
 	
@@ -76,13 +79,13 @@ public class Project {
 		
 		try{
 			
-			String partitionKey = "sensordb;project;guid";
+			String partitionKey = "sensordb;device;guid";
 			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
 		} catch(Exception ex) {
 			Log.error(ex);
-			throw new RestException("error retrieving project");
+			throw new RestException("error retrieving account");
 		}
 	}
 	
@@ -90,7 +93,7 @@ public class Project {
 		
 		try {
 			
-			String partitionKey = "sensordb;project;account" ;
+			String partitionKey = "sensordb;device;account" ;
 			// @todo check .NET lexographical order
 			String startKey = accountId + ";" ;
 			String endKey = accountId + "=" ;

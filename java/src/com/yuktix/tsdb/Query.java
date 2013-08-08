@@ -11,9 +11,9 @@ import com.microsoft.windowsazure.services.table.client.EntityProperty;
 import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.yuktix.rest.exception.RestException;
 import com.yuktix.util.Log;
-import com.yuktix.util.TimeUtil;
+import com.yuktix.util.AzureUtil;
 import com.yuktix.cloud.azure.Table;
-import com.yuktix.dto.query.SensorParam;
+import com.yuktix.dto.query.SensorQueryParam;
 
 /* 
  * class to model TSDB queries
@@ -62,7 +62,7 @@ public class Query {
 		return series;
 	}
 	
-	public List<HashMap<String, String>> getDataPoint(SensorParam param) {
+	public List<HashMap<String, String>> getDataPoint(SensorQueryParam param) {
 
 		List<HashMap<String, String>> series;
 
@@ -87,14 +87,14 @@ public class Query {
 		}
 	}
 
-	public List<HashMap<String, String>> getInTimeSlice(SensorParam param) {
+	public List<HashMap<String, String>> getInTimeSlice(SensorQueryParam param) {
 		
 		List<HashMap<String, String>> series;
 		
 		try {
 		
-			String startRowKey = TimeUtil.ticks(param.getTime_slice().getStartTS());
-			String endRowKey = TimeUtil.ticks(param.getTime_slice().getEndTS());
+			String startRowKey = AzureUtil.ticks(param.getTime_slice().getStartTS());
+			String endRowKey = AzureUtil.ticks(param.getTime_slice().getEndTS());
 			int size = 100 ;
 			
 			String partitionKey = param.getProjectId() + ";"+ param.getSerialNumber();

@@ -13,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.yuktix.data.Account;
+import com.yuktix.data.Device;
 import com.yuktix.data.Project;
 import com.yuktix.dto.response.* ;
 import com.yuktix.dto.provision.* ;
@@ -79,18 +80,38 @@ public class Service {
 		ResultSet data = Project.list(param.getAccountId(),param.getScrolling()) ;
 		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
-	
 	}
 	
 	@POST
 	@Path("/device/add")
-	public void addDevice(SensorParam param) {
+	public MapResponseBean addDevice(DeviceParam param) {
 		BeanUtil.null_check(param);
+		String deviceId = Device.add(param);
+		MapResponseBean bean = new MapResponseBean(200,"success");
+		bean.add("deviceId", deviceId);
+		return bean ;
+	}
+	
+	@GET
+	@Path("/device/{deviceId}")
+	public ResponseBean getDeviceOnId(@PathParam("deviceId") String param) {
+		BeanUtil.null_check(param);
+		HashMap<String,String> map = Device.getOnId(param);
+		ResponseBean bean = new ResponseBean(200,map);
+		return bean ;
+	}
+	
+	@POST
+	@Path("/device/list")
+	public ResponseBean getDevices(AccountScrollingParam param) {
+		ResultSet data = Device.list(param.getAccountId(),param.getScrolling()) ;
+		ResponseBean bean = new ResponseBean(200,data);
+		return bean ;
 	}
 	
 	@POST
 	@Path("/sensor/add")
-	public void addSensor(SensorParam param) {
+	public void addSensor(SensorQueryParam param) {
 		BeanUtil.null_check(param);
 	}
 	
@@ -106,7 +127,7 @@ public class Service {
 	
 	@POST
 	@Path("/sensor/latest")
-	public ResponseBean getSensorDataPoint(SensorParam param) {
+	public ResponseBean getSensorDataPoint(SensorQueryParam param) {
 		BeanUtil.null_check(param);
 		Query tsdbQuery = new Query() ;
 		List<HashMap<String,String>> response = tsdbQuery.getDataPoint(param);
@@ -116,7 +137,7 @@ public class Service {
 	
 	@POST
 	@Path("/sensor/query")
-	public ResponseBean getSensorDataInTimeSlice(SensorParam param) {
+	public ResponseBean getSensorDataInTimeSlice(SensorQueryParam param) {
 		BeanUtil.null_check(param);
 		Query tsdbQuery = new Query() ;
 		List<HashMap<String,String>> data = tsdbQuery.getInTimeSlice(param);
@@ -124,7 +145,6 @@ public class Service {
 		return bean ;
 	}
 	
-
 	@GET
 	@Path("/echo/{input}")
 	@Consumes(MediaType.TEXT_PLAIN)

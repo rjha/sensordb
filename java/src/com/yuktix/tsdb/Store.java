@@ -13,7 +13,7 @@ import com.yuktix.dto.Reading;
 import com.yuktix.dto.query.DataPointParam;
 import com.yuktix.rest.exception.RestException;
 import com.yuktix.util.Log;
-import com.yuktix.util.TimeUtil;
+import com.yuktix.util.AzureUtil;
 import com.yuktix.cloud.azure.Table;
 
 public class Store {
@@ -63,7 +63,7 @@ public class Store {
 					data.put(nvp.getName(), new EntityProperty(nvp.getValue()));
 				}
 				
-				rowKey = TimeUtil.ticks();
+				rowKey = AzureUtil.ticks();
 				entity = new DynamicTableEntity(data);
 				entity.setPartitionKey(partitionKey);
 				entity.setRowKey(rowKey);

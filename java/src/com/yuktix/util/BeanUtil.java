@@ -1,6 +1,7 @@
 package com.yuktix.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.microsoft.windowsazure.services.core.storage.ResultContinuation;
 import com.microsoft.windowsazure.services.core.storage.ResultContinuationType;
@@ -42,5 +43,13 @@ public class BeanUtil {
 		}
 		
 		return token ;
+	}
+	
+	public static String jsonEncode(Object object) throws Exception {
+		String output = null ;
+		ObjectMapper mapper = new ObjectMapper();
+		// fix extra backslashes
+		output = mapper.writeValueAsString(object);
+		return output ;
 	}
 }
