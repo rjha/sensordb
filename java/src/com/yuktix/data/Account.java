@@ -1,13 +1,7 @@
 package com.yuktix.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
 
-import com.microsoft.windowsazure.services.core.storage.ResultContinuation;
-import com.microsoft.windowsazure.services.core.storage.ResultSegment;
 import com.microsoft.windowsazure.services.table.client.CloudTableClient;
 import com.microsoft.windowsazure.services.table.client.DynamicTableEntity;
 import com.microsoft.windowsazure.services.table.client.EntityProperty;
@@ -16,11 +10,9 @@ import com.microsoft.windowsazure.services.table.client.TableOperation;
 import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.yuktix.cloud.azure.Table;
 import com.yuktix.dto.provision.AccountParam;
-import com.yuktix.dto.query.PaginationParam;
 import com.yuktix.dto.query.ResultSet;
 import com.yuktix.dto.query.ScrollingParam;
 import com.yuktix.rest.exception.RestException;
-import com.yuktix.util.BeanUtil;
 import com.yuktix.util.Log;
 import com.yuktix.util.StringUtil;
 
@@ -41,7 +33,7 @@ public class Account {
 			String guidPartitionKey = "sensordb;account;guid";
 			String namePartitionKey = "sensordb;account;name" ;
 			
-			String guid = UUID.randomUUID().toString();
+			String guid = Common.getGUID();
 			String canonicalName = StringUtil.getCanonicalName(param.getName()) ;
 			
 			// azure stuff
@@ -91,54 +83,15 @@ public class Account {
 		
 		try {
 			
-			// segmented query
-			CloudTableClient client = Table.getInstance();
 			String partitionKey = "sensordb;account;name" ;
 			String where_condition = String.format("(PartitionKey eq '%s') ",partitionKey);
+			
 			TableQuery<DynamicTableEntity> myQuery = TableQuery
 					.from("test", DynamicTableEntity.class)
 					.where(where_condition).take(10);
 			
-			ResultContinuation continuationToken = BeanUtil.getContinuationToken(param);
-			PaginationParam pagination = new PaginationParam();
-			
-			if(continuationToken != null) {
-				pagination.setPrevious_partition(param.getPartition_key());
-				pagination.setPrevious_row(param.getRow_key());
-				
-			}
-			
-			ResultSegment<DynamicTableEntity> response = client.executeSegmented(myQuery, new MyEntityResolver(), continuationToken) ;
-			// next continuation token
-			continuationToken = response.getContinuationToken() ;
-			
-			if(continuationToken != null) {
-				
-				pagination.setNext_partition(continuationToken.getNextPartitionKey());
-				pagination.setNext_row(continuationToken.getNextRowKey());
-			}
-			
-			HashMap<String, String> datum;
-			List<HashMap<String, String>> series = new ArrayList<HashMap<String, String>>();
-			DynamicTableEntity row;
-			EntityProperty ep;
-			
-			Iterator<DynamicTableEntity>rows = response.getResults().iterator() ;
-			
-			while(rows.hasNext()) {
-				row = rows.next() ;
-				HashMap<String, EntityProperty> map = row.getProperties();
-
-				datum = new HashMap<String, String>();
-				for (String key : map.keySet()) {
-					ep = map.get(key);
-					datum.put(key, ep.getValueAsString());
-				}
-				
-				series.add(datum);
-			}
-			
-			return new ResultSet(series,pagination) ;
+			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
+			return result ;
 			
 		} catch(Exception ex) {
 			Log.error(ex);
