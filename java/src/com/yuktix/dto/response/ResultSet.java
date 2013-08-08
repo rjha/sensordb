@@ -1,7 +1,9 @@
-package com.yuktix.dto.query;
+package com.yuktix.dto.response;
 
 import java.util.HashMap;
 import java.util.List;
+
+import com.yuktix.dto.query.PaginationParam;
 
 public class ResultSet {
 	List<HashMap<String, String>> series ;

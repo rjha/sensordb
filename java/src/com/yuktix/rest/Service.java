@@ -124,14 +124,13 @@ public class Service {
 		return bean ;
 	}
 	
-	/*
-	@GET
+	@POST
 	@Path("/project/list")
-	public ResponseBean getProjects() {
-		
+	public ResponseBean getProjects(AccountScrollingParam param) {
+		ResultSet data = Project.list(param.getAccountId(),param.getScrolling()) ;
+		ResponseBean bean = new ResponseBean(200,data);
+		return bean ;
 	
-	} */
-	
-	
+	}
 	
 }

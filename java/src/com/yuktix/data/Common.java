@@ -18,8 +18,8 @@ import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.microsoft.windowsazure.services.table.client.TableResult;
 import com.yuktix.cloud.azure.Table;
 import com.yuktix.dto.query.PaginationParam;
-import com.yuktix.dto.query.ResultSet;
 import com.yuktix.dto.query.ScrollingParam;
+import com.yuktix.dto.response.ResultSet;
 import com.yuktix.util.BeanUtil;
 
 

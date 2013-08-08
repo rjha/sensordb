@@ -3,9 +3,9 @@ package com.yuktix.dto.provision;
 public class ProjectParam {
 	private String name ;
 	private String accountId ;
-	
-	public ProjectParam(String name) {
-		this.name = name ;
+
+	public ProjectParam() {
+
 	}
 
 	public String getName() {
