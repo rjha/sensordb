@@ -4,18 +4,21 @@
 
     $partition_key = null ;
     $row_key = null ;
-    $post_url = "http://localhost:9090/sensordb/v1/account/list" ;
+    $post_url = "http://localhost:9090/sensordb/v1/project/list" ;
 
     while(true) {
 
         $data = new stdClass;
+        $data->accountId = "df72fa9b-7b26-4a23-b4c0-b332195c5890" ;
+        $data->scrolling = new stdClass ;
 
         if($partition_key != null ) {
-            $data->partition_key = $partition_key ;
-            $data->row_key = $row_key ;
+            $data->scrolling->partition_key = $partition_key ;
+            $data->scrolling->row_key = $row_key ;
         }
 
         $post_data = json_encode($data);
+
         $cookies = array("COOKIE1" => "ABCD1234" , "COOKIE2" => "magic1234");
         $response = get_curl_response($post_url,$post_data,$cookies,false);
         $code = $response["code"];
