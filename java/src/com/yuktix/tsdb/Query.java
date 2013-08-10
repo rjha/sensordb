@@ -93,8 +93,8 @@ public class Query {
 		
 		try {
 		
-			String startRowKey = AzureUtil.ticks(param.getTime_slice().getStartTS());
-			String endRowKey = AzureUtil.ticks(param.getTime_slice().getEndTS());
+			String startRowKey = AzureUtil.ticks(param.getTimeSlice().getStartTS());
+			String endRowKey = AzureUtil.ticks(param.getTimeSlice().getEndTS());
 			int size = 100 ;
 			
 			String partitionKey = param.getProjectId() + ";"+ param.getSerialNumber();

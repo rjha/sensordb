@@ -14,7 +14,7 @@ public class SensorQueryParam {
 	private String serialNumber ;
 	private String projectId ;
 	private int size ;
-	private TimeParam time_slice ;
+	private TimeParam timeSlice ;
 
 	public int getSize() {
 		return size;
@@ -40,12 +40,12 @@ public class SensorQueryParam {
 		this.projectId = projectId;
 	}
 
-	public TimeParam getTime_slice() {
-		return time_slice;
+	public TimeParam getTimeSlice() {
+		return timeSlice;
 	}
 
-	public void setTime_slice(TimeParam time_slice) {
-		this.time_slice = time_slice;
+	public void setTimeSlice(TimeParam timeSlice) {
+		this.timeSlice = timeSlice;
 	}
 	
 }

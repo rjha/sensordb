@@ -1,42 +1,42 @@
 package com.yuktix.dto.query;
 
 public class PaginationParam {
-	String previous_partition ;
-	String previous_row ;
+	String lastPartition ;
+	String lastRow ;
 	
-	String next_partition ;
-	String next_row ;
+	String nextPartition ;
+	String nextRow ;
 	
-	public String getNext_partition() {
-		return next_partition;
-	}
-	
-	public void setNext_partition(String next_partition) {
-		this.next_partition = next_partition;
+	public String getLastPartition() {
+		return lastPartition;
 	}
 	
-	public String getNext_row() {
-		return next_row;
+	public void setLastPartition(String lastPartition) {
+		this.lastPartition = lastPartition;
 	}
 	
-	public void setNext_row(String next_row) {
-		this.next_row = next_row;
+	public String getLastRow() {
+		return lastRow;
 	}
-
-	public String getPrevious_partition() {
-		return previous_partition;
+	
+	public void setLastRow(String lastRow) {
+		this.lastRow = lastRow;
 	}
-
-	public void setPrevious_partition(String previous_partition) {
-		this.previous_partition = previous_partition;
+	
+	public String getNextPartition() {
+		return nextPartition;
 	}
-
-	public String getPrevious_row() {
-		return previous_row;
+	
+	public void setNextPartition(String nextPartition) {
+		this.nextPartition = nextPartition;
 	}
-
-	public void setPrevious_row(String previous_row) {
-		this.previous_row = previous_row;
+	
+	public String getNextRow() {
+		return nextRow;
+	}
+	
+	public void setNextRow(String nextRow) {
+		this.nextRow = nextRow;
 	}
 	
 }

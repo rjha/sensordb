@@ -16,6 +16,7 @@ import com.yuktix.data.Account;
 import com.yuktix.data.Device;
 import com.yuktix.data.Project;
 import com.yuktix.dto.response.* ;
+import com.yuktix.dto.tsdb.DataPointParam;
 import com.yuktix.dto.provision.* ;
 import com.yuktix.dto.query.* ;
 import com.yuktix.tsdb.*;

@@ -1,19 +1,19 @@
-package com.yuktix.dto.query;
+package com.yuktix.dto.provision;
 
 import java.util.List;
 
 import com.yuktix.dto.NameValuePair;
-import com.yuktix.dto.Reading;
 
-
-// @todo add json input validation using json-schema
-// or a bean validation framework like hibernate validator
-
-public class DataPointParam {
-	private String serialNumber ;
-	private String projectId ;
-	private List<Reading> readings ;
+public class SensorParam {
+	
+	String serialNumber ;
+	// sensor belongs to a project
+	String projectId ;
+	// device belongs to an account
+	String  deviceId ;
+	
 	private List<NameValuePair> metaData ;
+	private List<String> groupKeys ;
 	
 	public String getSerialNumber() {
 		return serialNumber;
@@ -31,20 +31,28 @@ public class DataPointParam {
 		this.projectId = projectId;
 	}
 	
-	public List<Reading> getReadings() {
-		return readings;
+	public String getDeviceId() {
+		return deviceId;
 	}
-	
-	public void setReadings(List<Reading> readings) {
-		this.readings = readings;
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
-	
+
 	public List<NameValuePair> getMetaData() {
 		return metaData;
 	}
-	
+
 	public void setMetaData(List<NameValuePair> metaData) {
 		this.metaData = metaData;
 	}
-	
+
+	public List<String> getGroupKeys() {
+		return groupKeys;
+	}
+
+	public void setGroupKeys(List<String> groupKeys) {
+		this.groupKeys = groupKeys;
+	}
+
 }

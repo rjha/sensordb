@@ -72,8 +72,8 @@ public class Common {
 			PaginationParam pagination = new PaginationParam();
 			
 			if(continuationToken != null) {
-				pagination.setPrevious_partition(param.getPartition_key());
-				pagination.setPrevious_row(param.getRow_key());
+				pagination.setLastPartition(param.getPartition());
+				pagination.setLastRow(param.getRow());
 				
 			}
 			
@@ -85,8 +85,8 @@ public class Common {
 			
 			if(continuationToken != null) {
 				
-				pagination.setNext_partition(continuationToken.getNextPartitionKey());
-				pagination.setNext_row(continuationToken.getNextRowKey());
+				pagination.setNextPartition(continuationToken.getNextPartitionKey());
+				pagination.setNextRow(continuationToken.getNextRowKey());
 			}
 			
 			HashMap<String, String> datum;

@@ -2,7 +2,6 @@ package com.yuktix.dto.provision;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.yuktix.dto.Variable;
 
 public class DeviceParam {
 	
@@ -58,7 +57,7 @@ public class DeviceParam {
 		return variables;
 	}
 	
-	public void setVariables(ArrayList<com.yuktix.dto.Variable> variables) {
+	public void setVariables(ArrayList<com.yuktix.dto.provision.Variable> variables) {
 		this.variables = variables;
 	}
 	

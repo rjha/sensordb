@@ -34,12 +34,12 @@ public class BeanUtil {
 			token.setContinuationType(ResultContinuationType.TABLE);
 		}
 		
-		if(param != null && !StringUtils.isBlank(param.getPartition_key())) {
-			token.setNextPartitionKey(param.getPartition_key());
+		if(param != null && !StringUtils.isBlank(param.getPartition())) {
+			token.setNextPartitionKey(param.getPartition());
 		}
 		
-		if(param != null && !StringUtils.isBlank(param.getPartition_key())) {
-			token.setNextRowKey(param.getRow_key());
+		if(param != null && !StringUtils.isBlank(param.getPartition())) {
+			token.setNextRowKey(param.getRow());
 		}
 		
 		return token ;
