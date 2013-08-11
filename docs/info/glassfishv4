@@ -1,5 +1,5 @@
 
-Add application logging to glassfish
+application logging in glassfish
 -------------------------------------
 
 # go to server logging.properties (or you can also add to default)
@@ -20,7 +20,7 @@ $ find . -name *.log | xargs grep yuktix
 
 
 
-web.xml for glassfish deployment
+ web.xml for glassfish deployment
 ----------------------------------
 glassfish v4 is not able to load MyApplication class when we use servlet 3.0 spec
 and do not specify a servlet class.  This problem was not there when service classes
@@ -31,6 +31,16 @@ So now we are specifying org.glassfish.jersey.servlet.ServletContainer servlet c
 and passing our application name com.yuktix.rest.MyApplication inside
 init-param of this servlet.
 (what jersey user guide lists as servley 2.5 deployment)
+
+ included libraries
+---------------------
+
+what all libraries are included with glassfish?
+$find . -name *.jar
+see the modules folder inside glassfish distribution
+
+ securing glassfish
+---------------------
 
 
 
