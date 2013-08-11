@@ -1,8 +1,7 @@
 package com.yuktix.dto.provision;
 
+import java.util.HashMap;
 import java.util.List;
-
-import com.yuktix.dto.NameValuePair;
 
 public class SensorParam {
 	
@@ -12,7 +11,7 @@ public class SensorParam {
 	// device belongs to an account
 	String  deviceId ;
 	
-	private List<NameValuePair> metaData ;
+	private HashMap<String,String> metaData ;
 	private List<String> groupKeys ;
 	
 	public String getSerialNumber() {
@@ -39,14 +38,6 @@ public class SensorParam {
 		this.deviceId = deviceId;
 	}
 
-	public List<NameValuePair> getMetaData() {
-		return metaData;
-	}
-
-	public void setMetaData(List<NameValuePair> metaData) {
-		this.metaData = metaData;
-	}
-
 	public List<String> getGroupKeys() {
 		return groupKeys;
 	}
@@ -55,4 +46,12 @@ public class SensorParam {
 		this.groupKeys = groupKeys;
 	}
 
+	public HashMap<String, String> getMetaData() {
+		return metaData;
+	}
+
+	public void setMetaData(HashMap<String, String> metaData) {
+		this.metaData = metaData;
+	}
+		
 }

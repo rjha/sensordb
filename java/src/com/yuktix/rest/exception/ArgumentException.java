@@ -10,6 +10,6 @@ public class ArgumentException extends RestException  {
      }
  
      public ArgumentException(String param,String message) {
-    	 super(Status.BAD_REQUEST,String.format("Bad argument : %s : %s ",param,message)) ;
+    	 super(Status.BAD_REQUEST,String.format("Bad input : %s : %s ",param,message)) ;
      }
 }
