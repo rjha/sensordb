@@ -13,7 +13,6 @@
         $http_code = $response["code"];
         $result = $response["data"];
 
-
         if($http_code == 200 ) {
             print_r($result);
             printf(" \n \n ");

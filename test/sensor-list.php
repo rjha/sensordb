@@ -4,12 +4,12 @@
 
     $partition_key = null ;
     $row_key = null ;
-    $post_url = "http://localhost:9090/sensordb/v1/project/list" ;
+    $post_url = "http://localhost:9090/sensordb/v1/sensor/list" ;
 
     while(true) {
 
         $data = new stdClass;
-        $data->parameters = array("accountId" => "531623b2-e160-4ad1-a4c5-9c614a234112");
+        $data->parameters = array("projectId" => "9471ed77-01b3-4734-a18f-8b8446a650aa");
         $data->scrolling = new stdClass ;
 
         if($partition_key != null ) {

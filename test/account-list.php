@@ -11,8 +11,8 @@
         $data = new stdClass;
 
         if($partition_key != null ) {
-            $data->partition_key = $partition_key ;
-            $data->row_key = $row_key ;
+            $data->partition = $partition_key ;
+            $data->row = $row_key ;
         }
 
         $post_data = json_encode($data);
@@ -34,8 +34,8 @@
             if(is_object($jsonObj) && property_exists($jsonObj, "response")) { 
                 $pagination = $response->pagination ;
                 if(is_object($pagination)) {
-                    $partition_key = $pagination->next_partition;
-                    $row_key = $pagination->next_row;
+                    $partition_key = $pagination->nextPartition;
+                    $row_key = $pagination->nextRow;
                     if($partition_key == null || $row_key == NULL ) { goto finish ; }
                 }
             }

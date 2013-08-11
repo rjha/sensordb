@@ -4,7 +4,7 @@
 
     $partition_key = null ;
     $row_key = null ;
-    $post_url = "http://localhost:9090/sensordb/v1/project/list" ;
+    $post_url = "http://localhost:9090/sensordb/v1/device/list" ;
 
     while(true) {
 
