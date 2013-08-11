@@ -12,10 +12,13 @@ import com.yuktix.rest.exception.ArgumentException;
 
 public class StringUtil {
 	
-	// splitter from guava library
-	private static final Splitter SPACE_SPLITTER = Splitter.on(' ')
+	// splitter/joiner from guava library
+	public static final Splitter SPACE_SPLITTER = Splitter.on(' ')
 		       .trimResults()
 		       .omitEmptyStrings();
+	
+	public static final Joiner SEMI_COLON_JOINER = Joiner.on(";").skipNulls();
+	public static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 	
 	public static String getCanonicalName(String input) {
 		
@@ -27,8 +30,7 @@ public class StringUtil {
 			tokens.add(token) ;
 		}
 		
-		Joiner joiner = Joiner.on(";").skipNulls();
-		String name = joiner.join(tokens) ;
+		String name = SEMI_COLON_JOINER.join(tokens) ;
 		return name ;
 	}
 	
@@ -37,4 +39,5 @@ public class StringUtil {
 			throw new ArgumentException(name,"value is null") ;
 		}
 	}
+	
 }
