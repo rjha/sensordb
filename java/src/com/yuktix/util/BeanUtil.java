@@ -1,5 +1,7 @@
 package com.yuktix.util;
 
+import java.util.HashMap;
+
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -21,7 +23,7 @@ public class BeanUtil {
 	public static void null_check(Object param) {
 		// empty POST data means null param
 		if(param == null) {
-			throw new ArgumentException("wrong input; parameter is null");
+			throw new ArgumentException("wrong input; object is null");
 		}
 	}
 	
@@ -51,5 +53,14 @@ public class BeanUtil {
 		// fix extra backslashes
 		output = mapper.writeValueAsString(object);
 		return output ;
+	}
+	
+	public static String getSafeMapParam(HashMap<String,String> map, String key) {
+		if(map == null || (map.size() == 0)) {
+			return null ;
+		}
+		
+		String value = map.get(key);
+		return value ;
 	}
 }

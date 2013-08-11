@@ -22,6 +22,9 @@ public class Project {
 		
 		try {
 
+			StringUtil.null_check("name",param.getName()) ;
+			StringUtil.null_check("accountId",param.getAccountId()) ;
+			
 			String guidPartitionKey = "sensordb;project;guid";
 			String namePartitionKey = "sensordb;project;name" ;
 			String accountPartitionKey = "sensordb;project;account" ;
@@ -65,6 +68,8 @@ public class Project {
 			
 			return guid ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch (Exception ex) {
 			
 			Log.error(ex);
@@ -80,6 +85,8 @@ public class Project {
 			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
 			throw new RestException("error retrieving project");
@@ -104,6 +111,8 @@ public class Project {
 			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
 			return result ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
 			throw new RestException("error retrieving projects");

@@ -24,8 +24,8 @@ public class Sensor {
 		
 		try {
 
-			StringUtil.null_check("project",param.getProjectId()) ;
-			StringUtil.null_check("device",param.getDeviceId()) ;
+			StringUtil.null_check("projectId",param.getProjectId()) ;
+			StringUtil.null_check("deviceId",param.getDeviceId()) ;
 			
 			TableEntity entity1 ;
 			
@@ -75,6 +75,8 @@ public class Sensor {
 			CloudTableClient client = Table.getInstance();
 			client.execute("test", operation1);
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch (Exception ex) {
 			Log.error(ex);
 			throw new RestException("error adding new device");
@@ -89,6 +91,8 @@ public class Sensor {
 			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
 			throw new RestException("error retrieving sensor details");
@@ -109,6 +113,8 @@ public class Sensor {
 			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
 			return result ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
 			throw new RestException("error retrieving sensors list");

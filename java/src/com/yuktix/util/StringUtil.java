@@ -36,7 +36,8 @@ public class StringUtil {
 	
 	public static void null_check(String name, String value) {
 		if(StringUtils.isEmpty(value)) {
-			throw new ArgumentException(name,"value is null") ;
+			String message = String.format("%s is null", name);
+			throw new ArgumentException(message) ;
 		}
 	}
 	

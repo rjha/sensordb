@@ -23,7 +23,7 @@ public class Device {
 		try {
 
 			StringUtil.null_check("name",param.getName()) ;
-			StringUtil.null_check("account",param.getAccountId()) ;
+			StringUtil.null_check("accountId",param.getAccountId()) ;
 			
 			String guidPartitionKey = "sensordb;device;guid";
 			String namePartitionKey = "sensordb;device;name" ;
@@ -69,6 +69,8 @@ public class Device {
 			
 			return guid ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch (Exception ex) {
 			Log.error(ex);
 			throw new RestException("error adding new device");
@@ -83,6 +85,8 @@ public class Device {
 			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
 			throw new RestException("error retrieving account");
@@ -106,6 +110,9 @@ public class Device {
 			
 			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
 			return result ;
+			
+		} catch(RestException rex) {
+			throw rex ;
 			
 		} catch(Exception ex) {
 			Log.error(ex);

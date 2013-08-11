@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import com.yuktix.data.Account;
 import com.yuktix.data.Device;
 import com.yuktix.data.Project;
+import com.yuktix.data.Sensor;
 import com.yuktix.dto.response.* ;
 import com.yuktix.dto.tsdb.DataPointParam;
 import com.yuktix.dto.provision.* ;
@@ -77,8 +78,9 @@ public class Service {
 	
 	@POST
 	@Path("/project/list")
-	public ResponseBean getProjects(AccountScrollingParam param) {
-		ResultSet data = Project.list(param.getAccountId(),param.getScrolling()) ;
+	public ResponseBean getProjects(MapScrollingParam param) {
+		String accountId = BeanUtil.getSafeMapParam(param.getParameters(),"accountId");
+		ResultSet data = Project.list(accountId,param.getScrolling()) ;
 		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
 	}
@@ -104,16 +106,29 @@ public class Service {
 	
 	@POST
 	@Path("/device/list")
-	public ResponseBean getDevices(AccountScrollingParam param) {
-		ResultSet data = Device.list(param.getAccountId(),param.getScrolling()) ;
+	public ResponseBean getDevices(MapScrollingParam param) {
+		String accountId = BeanUtil.getSafeMapParam(param.getParameters(),"accountId");
+		ResultSet data = Device.list(accountId,param.getScrolling()) ;
 		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
 	}
 	
 	@POST
 	@Path("/sensor/add")
-	public void addSensor(SensorQueryParam param) {
+	public MapResponseBean addSensor(SensorParam param) throws Exception {
 		BeanUtil.null_check(param);
+		Sensor.add(param);
+		MapResponseBean bean = new MapResponseBean(200,"success");
+		return bean ;
+	}
+	
+	@POST
+	@Path("/sensor/list")
+	public ResponseBean getSensors(MapScrollingParam param) {
+		String projectId = BeanUtil.getSafeMapParam(param.getParameters(),"projectId");
+		ResultSet data = Sensor.list(projectId,param.getScrolling()) ;
+		ResponseBean bean = new ResponseBean(200,data);
+		return bean ;
 	}
 	
 	@POST

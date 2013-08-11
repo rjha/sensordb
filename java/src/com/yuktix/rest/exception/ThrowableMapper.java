@@ -10,7 +10,12 @@ import javax.ws.rs.ext.Provider;
 import com.yuktix.dto.response.ErrorBean;
 import com.yuktix.util.Log;
 
-	/*  mapper class to catch jersey runtime errors */
+	/*  
+	 * mapper class to catch jersey runtime errors 
+	 * @pattern All known service errors should be thrown as
+	 * a subclass of RestException. 
+	 * 
+	 */
 	
 	@Provider
 	public class ThrowableMapper implements ExceptionMapper<Throwable> {
@@ -26,16 +31,11 @@ import com.yuktix.util.Log;
 	    	// @todo - jersey exception contains stack trace
 	    	
 	    	if(ex instanceof org.codehaus.jackson.JsonProcessingException) {
-	    		message = String.format("malformed json; json processing error");
+	    		message = String.format("Bad json; json processing error");
 	    	}
 	    	
 	    	if(ex instanceof org.glassfish.jersey.server.ParamException) {
 	    		message = String.format("Bad request parameter : %s ", ((org.glassfish.jersey.server.ParamException) ex).getParameterName());
-	    	}
-	    	
-	    	if(ex instanceof com.yuktix.exception.ServiceIOException) {
-	    		message = ex.getMessage();
-	    		code = Status.SERVICE_UNAVAILABLE.getStatusCode() ;
 	    	}
 	    	
 	    	if(ex instanceof javax.ws.rs.ClientErrorException) {

@@ -7,8 +7,8 @@ import java.util.List;
 import redis.clients.jedis.Jedis;
 
 import com.yuktix.dto.NameValuePair;
-import com.yuktix.exception.ServiceIOException;
 import com.yuktix.redis.JedisWrapper;
+import com.yuktix.rest.exception.ServiceIOException;
 
 // @todo - fix design of rollups
 

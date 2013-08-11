@@ -59,6 +59,8 @@ public class Account {
 			
 			return guid ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch (Exception ex) {
 			Log.error(ex);
 			throw new RestException("error adding new account");
@@ -73,6 +75,8 @@ public class Account {
 			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
 			throw new RestException("error retrieving account");
@@ -93,6 +97,8 @@ public class Account {
 			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
 			return result ;
 			
+		} catch(RestException rex) {
+			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
 			throw new RestException("error retrieving accounts");

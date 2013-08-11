@@ -3,7 +3,7 @@ package com.yuktix.redis;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import com.yuktix.exception.ServiceIOException;
+import com.yuktix.rest.exception.ServiceIOException;
 import com.yuktix.util.Log;
 
 import redis.clients.jedis.Jedis;
@@ -32,7 +32,7 @@ public class JedisWrapper {
 	public static Jedis getConnection() throws ServiceIOException {
 		// error during initialization
 		if (pool == null ) {
-			throw new ServiceIOException("redis");
+			throw new ServiceIOException("Error initializing redis connection");
 		}
 		
 		return pool.getResource() ;
