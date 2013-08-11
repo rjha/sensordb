@@ -31,6 +31,20 @@ Go to VM arguments (and not program arguments)
 Add following line to VM argument
 -Djava.util.logging.config.file=/home/rjha/code/github/sensordb/java/web/logger.properties
 
+# normal java project to Dynamic web project
+This is needed to create .war files.
+click on project name | properties
+click project facets
+select Dynamic web module
+
+# create a .war file
+click on project | export | select Web | War file
+next - war file name and location
+
+# war file - include libs
+
+project | properties | Deployment Assembly
+there you can map what all files are copied to war 
 
 
 
