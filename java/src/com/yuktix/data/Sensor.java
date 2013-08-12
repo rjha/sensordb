@@ -79,7 +79,7 @@ public class Sensor {
 			throw rex ;
 		} catch (Exception ex) {
 			Log.error(ex);
-			throw new RestException("error adding new device");
+			throw new RestException("error adding new sensor");
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class Sensor {
 			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
-			throw new RestException("error retrieving sensor details");
+			throw new RestException("error retrieving sensor");
 		}
 	}
 	
@@ -117,7 +117,7 @@ public class Sensor {
 			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
-			throw new RestException("error retrieving sensors list");
+			throw new RestException("error retrieving sensors");
 		}
 	}
 	
