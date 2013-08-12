@@ -17,6 +17,10 @@ public class StringUtil {
 		       .trimResults()
 		       .omitEmptyStrings();
 	
+	public static final Splitter COMMA_SPLITTER = Splitter.on(',')
+		       .trimResults()
+		       .omitEmptyStrings();
+	
 	public static final Joiner SEMI_COLON_JOINER = Joiner.on(";").skipNulls();
 	public static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 	
