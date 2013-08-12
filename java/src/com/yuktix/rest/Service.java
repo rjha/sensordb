@@ -43,7 +43,7 @@ public class Service {
 	@Path("/account/{accountId}")
 	public ResponseBean getAccountOnId(@PathParam("accountId") String param) {
 		BeanUtil.null_check(param);
-		HashMap<String,String> map = Account.getOnId(param);
+		HashMap<String,Object> map = Account.getOnId(param);
 		ResponseBean bean = new ResponseBean(200,map);
 		return bean ;
 	}
@@ -71,7 +71,7 @@ public class Service {
 	@Path("/project/{projectId}")
 	public ResponseBean getProjectOnId(@PathParam("projectId") String param) {
 		BeanUtil.null_check(param);
-		HashMap<String,String> map = Project.getOnId(param);
+		HashMap<String,Object>  map = Project.getOnId(param);
 		ResponseBean bean = new ResponseBean(200,map);
 		return bean ;
 	}
@@ -99,7 +99,7 @@ public class Service {
 	@Path("/device/{deviceId}")
 	public ResponseBean getDeviceOnId(@PathParam("deviceId") String param) {
 		BeanUtil.null_check(param);
-		HashMap<String,String> map = Device.getOnId(param);
+		HashMap<String,Object> map = Device.getOnId(param);
 		ResponseBean bean = new ResponseBean(200,map);
 		return bean ;
 	}

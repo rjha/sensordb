@@ -77,12 +77,12 @@ public class Project {
 		}
 	}
 	
-	public static HashMap<String,String> getOnId(String guid) {
+	public static HashMap<String,Object> getOnId(String guid) {
 		
 		try{
 			
 			String partitionKey = "sensordb;project;guid";
-			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
+			HashMap<String,Object> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
 		} catch(RestException rex) {

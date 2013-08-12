@@ -38,7 +38,11 @@ public class Common {
 		return token ;
 	}
 	
-	public static HashMap<String,String> getEntity(String table, String partitionKey, String rowKey) throws Exception {
+	public static HashMap<String,Object> getEntity(
+			String table, 
+			String partitionKey, 
+			String rowKey,
+			IDataResolver resolver) throws Exception {
 		
 		TableOperation operation = TableOperation.retrieve(partitionKey, rowKey, DynamicTableEntity.class);
 		CloudTableClient client = Table.getInstance();
@@ -51,7 +55,7 @@ public class Common {
 		}
 		
 		HashMap<String,EntityProperty> columns = result.getProperties() ;
-		HashMap<String,String> map = new HashMap<String,String>();
+		HashMap<String,Object> map = new HashMap<String,Object>();
 		
 		Iterator<String> keys = columns.keySet().iterator();
 		while(keys.hasNext()) {
@@ -59,13 +63,28 @@ public class Common {
 			map.put(key, columns.get(key).getValueAsString());
 		}
 	
+		if(resolver != null) {
+			map = resolver.resolve(map);
+		}
+		
 		return map ;
 		
+	}
+	
+	public static HashMap<String,Object> getEntity(String table, String partitionKey, String rowKey) throws Exception {
+		return getEntity(table,partitionKey,rowKey,null); 
 	}
 	
 	public static ResultSet getSegmentedResultSet(
 			TableQuery<DynamicTableEntity> myQuery,
 			ScrollingParam param) throws Exception {
+		
+		return getSegmentedResultSet(myQuery, param,null) ;
+	}
+	
+	public static ResultSet getSegmentedResultSet(
+			TableQuery<DynamicTableEntity> myQuery,
+			ScrollingParam param, IDataResolver resolver) throws Exception {
 			
 			
 			ResultContinuation continuationToken = BeanUtil.getContinuationToken(param);
@@ -89,8 +108,8 @@ public class Common {
 				pagination.setNextRow(continuationToken.getNextRowKey());
 			}
 			
-			HashMap<String, String> datum;
-			List<HashMap<String, String>> series = new ArrayList<HashMap<String, String>>();
+			HashMap<String, Object> datum;
+			List<HashMap<String, Object>> series = new ArrayList<HashMap<String, Object>>();
 			DynamicTableEntity row;
 			EntityProperty ep;
 			
@@ -100,12 +119,15 @@ public class Common {
 				row = rows.next() ;
 				HashMap<String, EntityProperty> map = row.getProperties();
 
-				datum = new HashMap<String, String>();
+				datum = new HashMap<String, Object>();
 				for (String key : map.keySet()) {
 					ep = map.get(key);
 					datum.put(key, ep.getValueAsString());
 				}
 				
+				if(resolver != null) {
+					datum = resolver.resolve(datum);
+				}
 				series.add(datum);
 			}
 			

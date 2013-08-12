@@ -83,12 +83,12 @@ public class Sensor {
 		}
 	}
 	
-	public static HashMap<String,String> getOnId(String projectId,String guid) {
+	public static HashMap<String,Object> getOnId(String projectId,String guid) {
 		
 		try{
 			
 			String partitionKey = "sensordb;sensor;" + projectId;
-			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
+			HashMap<String,Object> map = Common.getEntity("test",partitionKey,guid);
 			return map ;
 			
 		} catch(RestException rex) {

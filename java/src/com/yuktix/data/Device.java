@@ -9,6 +9,7 @@ import com.microsoft.windowsazure.services.table.client.TableEntity;
 import com.microsoft.windowsazure.services.table.client.TableOperation;
 import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.yuktix.cloud.azure.Table;
+import com.yuktix.data.resolver.DeviceResolver;
 import com.yuktix.dto.provision.DeviceParam;
 import com.yuktix.dto.query.ScrollingParam;
 import com.yuktix.dto.response.ResultSet;
@@ -40,6 +41,11 @@ public class Device {
 			data.put("name", new EntityProperty(param.getName()));
 			data.put("manufacturer", new EntityProperty(param.getManufacturer()));
 			data.put("description", new EntityProperty(param.getDescription()));
+			
+			
+			// Entity property can handle only few data types
+			// we need to flatten the variables as "string" before
+			// pushing them to azure tables
 			
 			String variables = BeanUtil.jsonEncode(param.getVariables()) ;
 			data.put("variables", new EntityProperty(variables));
@@ -77,19 +83,21 @@ public class Device {
 		}
 	}
 	
-	public static HashMap<String,String> getOnId(String guid) {
+	public static HashMap<String,Object> getOnId(String guid) {
 		
 		try{
 			
 			String partitionKey = "sensordb;device;guid";
-			HashMap<String,String> map = Common.getEntity("test",partitionKey,guid);
+			IDataResolver resolver = new DeviceResolver();
+			HashMap<String,Object> map = Common.getEntity("test",partitionKey,guid,resolver);
+			
 			return map ;
 			
 		} catch(RestException rex) {
 			throw rex ;
 		} catch(Exception ex) {
 			Log.error(ex);
-			throw new RestException("error retrieving account");
+			throw new RestException("error retrieving device");
 		}
 	}
 	
@@ -108,7 +116,8 @@ public class Device {
 					.from("test", DynamicTableEntity.class)
 					.where(where_condition).take(10);
 			
-			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
+			IDataResolver resolver = new DeviceResolver();
+			ResultSet result = Common.getSegmentedResultSet(myQuery,param,resolver);
 			return result ;
 			
 		} catch(RestException rex) {
@@ -116,7 +125,7 @@ public class Device {
 			
 		} catch(Exception ex) {
 			Log.error(ex);
-			throw new RestException("error retrieving projects");
+			throw new RestException("error retrieving devices");
 		}
 	}
 	

@@ -50,7 +50,6 @@ public class BeanUtil {
 	public static String jsonEncode(Object object) throws Exception {
 		String output = null ;
 		ObjectMapper mapper = new ObjectMapper();
-		// fix extra backslashes
 		output = mapper.writeValueAsString(object);
 		return output ;
 	}
