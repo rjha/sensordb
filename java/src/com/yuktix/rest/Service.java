@@ -1,6 +1,8 @@
 package com.yuktix.rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -9,7 +11,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.yuktix.data.Account;
@@ -20,8 +21,10 @@ import com.yuktix.dto.response.* ;
 import com.yuktix.dto.tsdb.DataPointParam;
 import com.yuktix.dto.provision.* ;
 import com.yuktix.dto.query.* ;
+import com.yuktix.rest.exception.ArgumentException;
 import com.yuktix.tsdb.*;
 import com.yuktix.util.BeanUtil;
+import com.yuktix.util.StringUtil;
 
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -122,6 +125,32 @@ public class Service {
 		return bean ;
 	}
 	
+	@GET
+	@Path("/sensor/{sensorId}")
+	public ResponseBean getSensorOnId(@PathParam("sensorId") String param) {
+		BeanUtil.null_check(param);
+		
+		// get projectId and sensorId from param
+		Iterator<String> iterator = StringUtil.COMMA_SPLITTER.split(param).iterator();
+		List<String> tokens = new ArrayList<String>();
+		
+		while(iterator.hasNext()) {
+			String token = iterator.next() ;
+			tokens.add(token);
+		}
+		
+		if(tokens.size() != 2) {
+			throw new ArgumentException("sensorId is not in required format");
+		}
+		
+		String projectId = tokens.get(0);
+		String serialNumber = tokens.get(1);
+		
+		HashMap<String,Object> map = Sensor.getOnId(projectId,serialNumber);
+		ResponseBean bean = new ResponseBean(200,map);
+		return bean ;
+	}
+	
 	@POST
 	@Path("/sensor/list")
 	public ResponseBean getSensors(MapScrollingParam param) {
@@ -133,7 +162,7 @@ public class Service {
 	
 	@POST
 	@Path("/datapoint")
-	public MapResponseBean addDataPoint(@QueryParam("token") String token,DataPointParam param) {
+	public MapResponseBean addDataPoint(DataPointParam param) {
 		BeanUtil.null_check(param);
 		Store tsdbStore = new Store() ;
 		tsdbStore.addDataPoint(param);
