@@ -1,8 +1,8 @@
 package com.yuktix.rest;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -13,7 +13,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.yuktix.data.Account;
+import com.yuktix.data.SensorTSDB;
 import com.yuktix.data.Device;
 import com.yuktix.data.Project;
 import com.yuktix.data.Sensor;
@@ -22,9 +25,8 @@ import com.yuktix.dto.tsdb.DataPointParam;
 import com.yuktix.dto.provision.* ;
 import com.yuktix.dto.query.* ;
 import com.yuktix.rest.exception.ArgumentException;
-import com.yuktix.tsdb.*;
 import com.yuktix.util.BeanUtil;
-import com.yuktix.util.StringUtil;
+
 
 @Path("/v1")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -129,22 +131,14 @@ public class Service {
 	@Path("/sensor/{sensorId}")
 	public ResponseBean getSensorOnId(@PathParam("sensorId") String param) {
 		BeanUtil.null_check(param);
+		String[] tokens = StringUtils.split(param, ',');
 		
-		// get projectId and sensorId from param
-		Iterator<String> iterator = StringUtil.COMMA_SPLITTER.split(param).iterator();
-		List<String> tokens = new ArrayList<String>();
-		
-		while(iterator.hasNext()) {
-			String token = iterator.next() ;
-			tokens.add(token);
-		}
-		
-		if(tokens.size() != 2) {
+		if(tokens.length != 2) {
 			throw new ArgumentException("sensorId is not in required format");
 		}
 		
-		String projectId = tokens.get(0);
-		String serialNumber = tokens.get(1);
+		String projectId = tokens[0];
+		String serialNumber = tokens[1];
 		
 		HashMap<String,Object> map = Sensor.getOnId(projectId,serialNumber);
 		ResponseBean bean = new ResponseBean(200,map);
@@ -164,28 +158,25 @@ public class Service {
 	@Path("/datapoint")
 	public MapResponseBean addDataPoint(DataPointParam param) {
 		BeanUtil.null_check(param);
-		Store tsdbStore = new Store() ;
-		tsdbStore.addDataPoint(param);
+		SensorTSDB.add(param);
 		MapResponseBean bean = new MapResponseBean(200,"success");
 		return bean ;
 	}
 	
 	@POST
 	@Path("/sensor/latest")
-	public ResponseBean getSensorDataPoint(SensorQueryParam param) {
+	public ResponseBean getLatestDataPoint(SensorQueryParam param) {
 		BeanUtil.null_check(param);
-		Query tsdbQuery = new Query() ;
-		List<HashMap<String,String>> response = tsdbQuery.getDataPoint(param);
+		ResultSet response = SensorTSDB.getLatest(param);
 		ResponseBean bean = new ResponseBean(200,response);
 		return bean ;
 	}
 	
 	@POST
 	@Path("/sensor/query")
-	public ResponseBean getSensorDataInTimeSlice(SensorQueryParam param) {
+	public ResponseBean queryDataPoint(SensorQueryParam param) {
 		BeanUtil.null_check(param);
-		Query tsdbQuery = new Query() ;
-		List<HashMap<String,String>> data = tsdbQuery.getInTimeSlice(param);
+		ResultSet data = SensorTSDB.query(param);
 		ResponseBean bean = new ResponseBean(200,data);
 		return bean ;
 	}
@@ -196,6 +187,38 @@ public class Service {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String echo(@PathParam("input") String echo) {
 		return echo ;
+	}
+	
+	@GET
+	@Path("/sms/{data}")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public MapResponseBean parseSms(@PathParam("data") String data) {
+		
+		String[] tokens = StringUtils.split(data, ',') ;
+		if(tokens.length != 3) {
+			throw new ArgumentException("") ;
+		}
+		
+		String projectId = tokens[0] ;
+		String serialNumber = tokens[1] ;
+		String value = tokens[2] ;
+		
+		DataPointParam param = new DataPointParam();
+		param.setProjectId(projectId);
+		param.setSerialNumber(serialNumber);
+		Reading reading = new Reading();
+		reading.setName("state");
+		reading.setValue(value);
+		String ts = String.format("%d", new Date().getTime());
+		reading.setTimestamp(ts);
+		List<Reading> readings = new ArrayList<Reading>();
+		readings.add(reading);
+		param.setReadings(readings);
+		 
+		SensorTSDB.add(param);
+		MapResponseBean bean = new MapResponseBean(200,"success");
+		return bean ;
+		
 	}
 	
 }

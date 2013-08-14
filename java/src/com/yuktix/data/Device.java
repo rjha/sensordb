@@ -31,7 +31,7 @@ public class Device {
 			String accountPartitionKey = "sensordb;device;account" ;
 			
 			
-			String guid = Common.getGUID();
+			String guid = DataHelper.getGUID();
 			String canonicalName = StringUtil.getCanonicalName(param.getName()) ;
 			
 			// azure stuff
@@ -89,7 +89,7 @@ public class Device {
 			
 			String partitionKey = "sensordb;device;guid";
 			IDataResolver resolver = new DeviceResolver();
-			HashMap<String,Object> map = Common.getEntity("test",partitionKey,guid,resolver);
+			HashMap<String,Object> map = DataHelper.getEntity("test",partitionKey,guid,resolver);
 			
 			return map ;
 			
@@ -114,10 +114,10 @@ public class Device {
 			
 			TableQuery<DynamicTableEntity> myQuery = TableQuery
 					.from("test", DynamicTableEntity.class)
-					.where(where_condition).take(10);
+					.where(where_condition).take(param.getSize());
 			
 			IDataResolver resolver = new DeviceResolver();
-			ResultSet result = Common.getSegmentedResultSet(myQuery,param,resolver);
+			ResultSet result = DataHelper.getSegmentedResultSet(myQuery,param,resolver);
 			return result ;
 			
 		} catch(RestException rex) {

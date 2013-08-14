@@ -1,4 +1,4 @@
-package com.yuktix.tsdb;
+package com.yuktix.data;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,28 +8,37 @@ import com.microsoft.windowsazure.services.table.client.DynamicTableEntity;
 import com.microsoft.windowsazure.services.table.client.EntityProperty;
 import com.microsoft.windowsazure.services.table.client.TableBatchOperation;
 import com.microsoft.windowsazure.services.table.client.TableEntity;
-import com.yuktix.dto.NameValuePair;
+import com.microsoft.windowsazure.services.table.client.TableQuery;
 import com.yuktix.dto.provision.Reading;
+import com.yuktix.dto.query.SensorQueryParam;
+import com.yuktix.dto.response.ResultSet;
 import com.yuktix.dto.tsdb.DataPointParam;
 import com.yuktix.rest.exception.RestException;
+import com.yuktix.tsdb.Rollup;
+import com.yuktix.tsdb.RollupOperation;
 import com.yuktix.util.Log;
 import com.yuktix.util.AzureUtil;
 import com.yuktix.cloud.azure.Table;
 
-public class Store {
+
+/* 
+ * class to model TSDB queries
+ * @see http://stackoverflow.com/questions/12623271/windows-azure-table-storage-take-issue
+ * 
+ */
+
+public class SensorTSDB {
 
 	
-	public void addDataPoint(DataPointParam dp) {
+	public static void add(DataPointParam dp) {
 		
 		try {
 
+			// @todo projectId + serial number check
 			// partition key is fixed
 			String partitionKey = dp.getProjectId() + ";"+ dp.getSerialNumber();
 			String rowKey = null ;
 			
-			// meta data
-			NameValuePair nvp ;
-			Iterator<NameValuePair> nvps ;
 			// sensor readings
 			Iterator<Reading> readings ;
 			
@@ -56,13 +65,6 @@ public class Store {
 				data.put(reading.getName(), new EntityProperty(reading.getValue()));
 				data.put("client_ts", new EntityProperty(reading.getTimestamp()));
 				
-				// fixed meta data for one batch of sensor readings
-				nvps = dp.getMetaData().iterator();
-				while (nvps.hasNext()) {
-					nvp = nvps.next();
-					data.put(nvp.getName(), new EntityProperty(nvp.getValue()));
-				}
-				
 				rowKey = AzureUtil.ticks();
 				entity = new DynamicTableEntity(data);
 				entity.setPartitionKey(partitionKey);
@@ -82,9 +84,69 @@ public class Store {
 			client.execute("test", operation);
 			rollup.execute(oprollup);
 			
+		} catch(RestException rex) {
+			throw rex ;
+		
 		} catch (Exception ex) {
 			Log.error("error in tsdb store",ex);
 			throw new RestException("error adding new data point");
 		}
+	}
+	
+	public static ResultSet getLatest(SensorQueryParam param) {
+		
+		try {
+			
+			// @todo fetch meta data for this sensor
+			String partitionKey = param.getProjectId() + ";"+ param.getSerialNumber();
+			String where_condition = String.format("(PartitionKey eq '%s')",partitionKey);
+			int size = (param.getSize() <= 0) ? 1 : param.getSize();
+			
+			TableQuery<DynamicTableEntity> myQuery = TableQuery
+					.from("test", DynamicTableEntity.class)
+					.where(where_condition).take(size);
+			
+			
+			ResultSet result = DataHelper.getResultSet(myQuery,size);
+			return result ;
+			
+		} catch(RestException rex) {
+			throw rex ;
+			
+		} catch (Exception ex) {
+			Log.error("error in tsdb store",ex);
+			throw new RestException("error in data query");
+		}
+	}
+	
+	public static ResultSet query(SensorQueryParam param) {
+		
+		try {
+		
+			String startRowKey = AzureUtil.ticks(param.getTimeSlice().getStartTS());
+			String endRowKey = AzureUtil.ticks(param.getTimeSlice().getEndTS());
+			int size = 100 ;
+			
+			String partitionKey = param.getProjectId() + ";"+ param.getSerialNumber();
+			// end row key is smaller (recent ticks are smaller)
+			String where_condition = 
+					String.format("(PartitionKey eq '%s') and (RowKey le '%s') and (RowKey ge '%s') ",partitionKey,startRowKey,endRowKey);
+			
+			TableQuery<DynamicTableEntity> myQuery = TableQuery
+					.from("test", DynamicTableEntity.class)
+					.where(where_condition).take(size);
+			
+			ResultSet result = DataHelper.getResultSet(myQuery,size);
+			return result ;
+			
+		} catch(RestException rex) {
+			throw rex ;
+
+		} catch (Exception ex) {
+			
+			Log.error("error in tsdb query", ex);
+			throw new RestException("error in data query");
+		}
+		
 	}
 }

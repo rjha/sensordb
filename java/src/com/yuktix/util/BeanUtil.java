@@ -22,6 +22,7 @@ public class BeanUtil {
 	
 	public static void null_check(Object param) {
 		// empty POST data means null param
+		
 		if(param == null) {
 			throw new ArgumentException("wrong input; object is null");
 		}

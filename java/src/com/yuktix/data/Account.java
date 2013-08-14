@@ -33,7 +33,7 @@ public class Account {
 			String guidPartitionKey = "sensordb;account;guid";
 			String namePartitionKey = "sensordb;account;name" ;
 			
-			String guid = Common.getGUID();
+			String guid = DataHelper.getGUID();
 			String canonicalName = StringUtil.getCanonicalName(param.getName()) ;
 			
 			// azure stuff
@@ -72,7 +72,7 @@ public class Account {
 		try{
 			
 			String partitionKey = "sensordb;account;guid";
-			HashMap<String,Object> map = Common.getEntity("test",partitionKey,guid);
+			HashMap<String,Object> map = DataHelper.getEntity("test",partitionKey,guid);
 			return map ;
 			
 		} catch(RestException rex) {
@@ -92,9 +92,9 @@ public class Account {
 			
 			TableQuery<DynamicTableEntity> myQuery = TableQuery
 					.from("test", DynamicTableEntity.class)
-					.where(where_condition).take(10);
+					.where(where_condition).take(param.getSize());
 			
-			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
+			ResultSet result = DataHelper.getSegmentedResultSet(myQuery,param);
 			return result ;
 			
 		} catch(RestException rex) {

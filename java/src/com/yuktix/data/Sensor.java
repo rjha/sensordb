@@ -32,22 +32,22 @@ public class Sensor {
 			HashMap<String, EntityProperty> data =  new HashMap<String, EntityProperty>();
 			HashMap<String,String> metaData = param.getMetaData() ;
 			String projectId = param.getProjectId() ;
-			List<String> groupKeys = param.getGroupKeys() ;
+			List<String> filters = param.getFilters() ;
 			
-			if(groupKeys != null && (groupKeys.size() > 0)) {
+			if(filters != null && (filters.size() > 0)) {
 				if(metaData == null || (metaData.size() == 0)) {
-					throw new ArgumentException("group keys should be part of meta data");
+					throw new ArgumentException("no meta data : filters should be part of meta data");
 				}
 				
 				// group keys should be part of meta data
-				for(String key : param.getGroupKeys()) {
+				for(String key : param.getFilters()) {
 					if(!metaData.containsKey(key)) {
-						throw new ArgumentException("group keys is not part of meta data");
+						throw new ArgumentException("filter not found in meta data");
 					}
 				}
 				
-				String groups = StringUtil.COMMA_JOINER.join(param.getGroupKeys());
-				data.put("groups", new EntityProperty(groups));
+				String strFilters = StringUtil.COMMA_JOINER.join(param.getFilters());
+				data.put("filters", new EntityProperty(strFilters));
 			}
 			
 			// project specific partition
@@ -88,7 +88,7 @@ public class Sensor {
 		try{
 			
 			String partitionKey = "sensordb;sensor;" + projectId;
-			HashMap<String,Object> map = Common.getEntity("test",partitionKey,guid);
+			HashMap<String,Object> map = DataHelper.getEntity("test",partitionKey,guid);
 			return map ;
 			
 		} catch(RestException rex) {
@@ -108,9 +108,9 @@ public class Sensor {
 			
 			TableQuery<DynamicTableEntity> myQuery = TableQuery
 					.from("test", DynamicTableEntity.class)
-					.where(where_condition).take(10);
+					.where(where_condition).take(param.getSize());
 			
-			ResultSet result = Common.getSegmentedResultSet(myQuery,param);
+			ResultSet result = DataHelper.getSegmentedResultSet(myQuery,param);
 			return result ;
 			
 		} catch(RestException rex) {

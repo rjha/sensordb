@@ -4,6 +4,11 @@ public class ScrollingParam {
 	
 	private String partition ;
 	private String row ;
+	private int size ;
+	
+	public ScrollingParam() {
+		this.size = 25 ;
+	}
 	
 	public String getPartition() {
 		return partition;
@@ -19,6 +24,14 @@ public class ScrollingParam {
 	
 	public void setRow(String row) {
 		this.row = row;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 	
 }

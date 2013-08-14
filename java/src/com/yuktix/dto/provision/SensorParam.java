@@ -12,7 +12,7 @@ public class SensorParam {
 	String  deviceId ;
 	
 	private HashMap<String,String> metaData ;
-	private List<String> groupKeys ;
+	private List<String> filters ;
 	
 	public String getSerialNumber() {
 		return serialNumber;
@@ -38,12 +38,12 @@ public class SensorParam {
 		this.deviceId = deviceId;
 	}
 
-	public List<String> getGroupKeys() {
-		return groupKeys;
+	public List<String> getFilters() {
+		return filters;
 	}
 
-	public void setGroupKeys(List<String> groupKeys) {
-		this.groupKeys = groupKeys;
+	public void setFilters(List<String> filters) {
+		this.filters = filters;
 	}
 
 	public HashMap<String, String> getMetaData() {
