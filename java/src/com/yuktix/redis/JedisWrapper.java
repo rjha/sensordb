@@ -1,11 +1,6 @@
 package com.yuktix.redis;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import com.yuktix.rest.exception.ServiceIOException;
-import com.yuktix.util.Log;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -14,6 +9,7 @@ public class JedisWrapper {
 	// thread safe jedis pool
 	private static JedisPool pool ;
 	
+	/*
 	static {
 		
 		try {
@@ -27,7 +23,7 @@ public class JedisWrapper {
 			Log.error(message, ex);
 			
 		}
-	}
+	} */
 	
 	public static Jedis getConnection() throws ServiceIOException {
 		// error during initialization

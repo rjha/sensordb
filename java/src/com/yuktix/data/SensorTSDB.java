@@ -14,8 +14,7 @@ import com.yuktix.dto.query.SensorQueryParam;
 import com.yuktix.dto.response.ResultSet;
 import com.yuktix.dto.tsdb.DataPointParam;
 import com.yuktix.rest.exception.RestException;
-import com.yuktix.tsdb.Rollup;
-import com.yuktix.tsdb.RollupOperation;
+
 import com.yuktix.util.Log;
 import com.yuktix.util.AzureUtil;
 import com.yuktix.cloud.azure.Table;
@@ -52,10 +51,6 @@ public class SensorTSDB {
 			TableEntity entity ;
 			TableBatchOperation operation = new TableBatchOperation();
 			
-			// get rollup buckets for this project
-			Rollup rollup = new Rollup(dp.getProjectId());
-			RollupOperation oprollup = new RollupOperation();
-			
 			while (readings.hasNext()) {
 				reading = readings.next();
 				data = new HashMap<String, EntityProperty>();
@@ -75,14 +70,10 @@ public class SensorTSDB {
 				// # one entity - can include once only
 				operation.insert(entity);
 				
-				// Add to rollup operation
-				oprollup.insert(reading.getName(),reading.getValue());
-				
 			}
 			
 			CloudTableClient client = Table.getInstance();
 			client.execute("test", operation);
-			rollup.execute(oprollup);
 			
 		} catch(RestException rex) {
 			throw rex ;
