@@ -39,8 +39,27 @@ what all libraries are included with glassfish?
 $find . -name *.jar
 see the modules folder inside glassfish distribution
 
- securing glassfish
----------------------
+glassfish on internet
+-----------------------
 
+# set admin password
+(first stop the domain)
+
+azureuser@yuktix01:~/sw/glassfish4$ ./bin/asadmin --host localhost --port 4848 change-admin-password
+Enter admin user name [default: admin]>
+Enter the admin password> 
+Enter the new admin password> 
+Enter the new admin password again> 
+Command change-admin-password executed successfully.
+
+# start the domain
+# enable secure admin
+
+asadmin --host localhost --port 4848 enable-secure-admin
+
+# restart domain
+# access glassfish admin console over SSL
+https://yuktix01.cloudapp.net:4848
+you will get a warning about SSL Cert - ignore and continue
 
 
