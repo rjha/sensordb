@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,12 +21,14 @@ import com.yuktix.data.SensorTSDB;
 import com.yuktix.data.Device;
 import com.yuktix.data.Project;
 import com.yuktix.data.Sensor;
+import com.yuktix.dto.SmsBeanParam;
 import com.yuktix.dto.response.* ;
 import com.yuktix.dto.tsdb.DataPointParam;
 import com.yuktix.dto.provision.* ;
 import com.yuktix.dto.query.* ;
 import com.yuktix.rest.exception.ArgumentException;
 import com.yuktix.util.BeanUtil;
+import com.yuktix.util.Log;
 
 
 @Path("/v1")
@@ -190,13 +193,23 @@ public class Service {
 	}
 	
 	@GET
-	@Path("/sms/{data}")
+	@Path("/sms")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public MapResponseBean parseSms(@PathParam("data") String data) {
+	public MapResponseBean parseSms(@BeanParam SmsBeanParam beanParam) {
+		
+		String data = beanParam.getBody();
+		if(StringUtils.isBlank(data)) {
+			throw new ArgumentException("No SMS data received") ;
+		}
+		
+		if(Log.isDebug) {
+			Log.debug("sms from =>" + beanParam.getFrom());
+			Log.debug("sms body =>" + data);
+		}
 		
 		String[] tokens = StringUtils.split(data, ',') ;
 		if(tokens.length != 3) {
-			throw new ArgumentException("") ;
+			throw new ArgumentException("SMS data is not in prescribed format") ;
 		}
 		
 		String projectId = tokens[0] ;
