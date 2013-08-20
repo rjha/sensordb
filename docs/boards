@@ -75,7 +75,22 @@ TI stellaris ethernet controller
     How much do the Xbee radios cost?
     Radio Tags - 
 
-+ small footprint TCP/IP libraries
++ small footprint TCP/IP stack
+uIPv6
+uIP
+embTcp
+lwIp
+web socket
+AVR libc
+look @xively examples
+serialIp library
+
++ Feasibility
+Contiki + Arduino - possible?
+price points - different types of Boards
+
+
+
 
 
 
