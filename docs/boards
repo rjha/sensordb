@@ -1,0 +1,90 @@
+
+Configuration:
+    Sensors => central server
+        GSM
+            GSM modem
+            Module to form SMS payload
+            (Data exchange format?)
+        Wi-Fi
+            Electric imp.
+            How to configure imp card?
+        Ethernet
+            Ethernet shield
+
+    Central Server => Sensor
+        GSM
+            SMS to GSM modem number
+        Wi-Fi
+            Web socket
+            BSD socket?
+        Ethernet
+            ?
+
+    Sensors => Gateway
+        Bluetooth
+        Radio (XBee)
+        Ethernet
+
+    Gateway => sensors
+        Bluetooth
+        Radio
+        Ethernet
+
+    Gateway <=> Central Server
+        Ethernet
+        Wi-Fi
+        GSM
+
+    Android Phone <=> sensors
+        Bluetooth
+        Let the phone control stuff
+        Over wireless
+        Range of wireless/ Range of bluetooth
+
+    static IP vs non-static IP
+    Do we know the IP from outside?
+    How to send commands over the network?
+    IoT gateway for that!
+
+
++ lwIp (lightweight Ip) library?
++ BeRTOS
++ BSD sockets on Arduino? 
+(lightweight libraries)
++ web sockets implementation
++ Arduino Ethernet library?
+    http://arduino.cc/en/reference/ethernet
+    Either server accepting incoming connections
+    or client making outgoing connections
+
++ MQTT (throw it away?)
++ Arduino - RAM/ROM size?
++ Arduino board <=> two way serial communication is always possible
+    Trick is to find someone who can accept commands from outside - e.g. GSM
+    like RPi box with a GSM modem that can talk to sensors over Wi-Fi or Bluetooth or wires 
+
++ Embedded systems <=> 2-way communication with network
+TI stellaris ethernet controller
+
++ Contiki-Arduino port may not be a great thing!
++ Contiki - may be useless if you are not doing the boards
+
++ Questions
+    why Arduino boards? what is next cost-wise and spec-wise?
+    How much do the RFID tags with 20M range cost?
+    How much do the Xbee radios cost?
+    Radio Tags - 
+
++ small footprint TCP/IP libraries
+
+
+
+     
+
+
+
+
+
+
+
+    
