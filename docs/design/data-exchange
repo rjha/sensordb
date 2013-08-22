@@ -1,0 +1,140 @@
+
+------------------------
+Data exchangle format
+------------------------
+
+Suppose we have an Arduino board with a temperature sensor and we want to read the temperature
+value and send it to our web server via a GSM Modem. All we need to do is to read the value 
+from sensor and write it to GSM modem serial port. GSM modem will in turn forward this value to 
+an SMS gateway and then onto our web server.
+
+  
+So the scheme looks like
+
+inside Arduino program
+
+// temp. variable
+float temp ;
+// read temp, say 298.10
+Serial.write(temp)
+
+The GSM modem in turn sends an SMS with current temp. value. The SMS looks like
+--- from 9886123456 ---
+298.10
+
+What is the problem with this scheme? 
+
+#problem-1 is that there are devices that can send more than one variable. Say, we have a multi purpose sensor 
+plugged into our Arduino board that is sending temperature and moisture data. Moisture is defined in percentage,
+a number between 0-100.  So we can read variables like following inside our program on Arduino board
+
+float temp ;
+integer moisture ;
+
+// read variables, temp = 299.30 , moisture=49
+Then you can write them to GSM modem one after another, like
+Serial.write(temp)
+Serial.write(mositure)
+
+Now the SMS from GSM modem would look like,
+
+--- from 9886123456 ---
+299.3049
+
+Reading this value on server is a problem. where does temperature end and where does moisture start?
+To fix that problem, we need to add some sort of delimiter when we are writing to GSM modem. So we 
+come up with a scheme to separate multiple variables by a comma. So now, our SMS looks like,
+
+--- from 9886123456 ---
+299.30,49
+
+
+Now we think the problem is solved. Just separate variables by a comma when sending. On the server, split 
+values on comma and read one by one. All is well and good if we are dealing with just one board. However,
+#lesson-1 here is that we need some sort of convention when dealing with multiple variables to say which is which.
+
+Now, what all does our server program need to know? The server program needs to know that 
+	1 - the board is sending two variables called temperature and moisture
+	2 - parse temperature as float and moisture as integer
+	3 - temperature comes before moisture
+	4 - variables are separated by a comma
+
+This may work if we have only one board. Now say, we have another board we want to collect data from. This board is 
+sending pressure(a float) and ambient light readings (a string, light/dark). The program on board is separating 
+2 variables by a hash (#)
+
+The SMS from this board looks like
+
+--- from 9886123456 ---
+dark#2.1
+
+Now our server program should know about the variables names on board #2, 
+what is coming first, what is the delimiter, what is data type of each variable (string/float/integer)
+Essentially, we have to write a new program to parse this SMS. The old one for board #1 would not work.
+
+Do you see the problem? 
+
+#problem-2 We cannot just keep writing customized SMS parsers if we are dealing with lot of devices
+that can send different types of variables. We need a better scheme where the program running on Arduino 
+board just encodes information about variable names, their data types and their values in a standard way.
+That way we do not have to write a new SMS parser for every device. 
+
+# Ideal solution 
+The device should use a libraray to encode (serialize) information about 
+	- variable name
+	- data type (string/float/integer)
+	- variable value
+
+on the server, we use the same library to decode (deserialize) this information. 
+The library should 
+	+ Deal with floats
+	+ Preferrably be a text exchange format rather than binary
+	(sending binary on SMS would require additional work)
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This kind of scheme works if,
+ + the web server knows that Arduino is sending temperature values
+ + 
+
+on the Arduino board, we load a program that can connect to our web server and send data.
+inside the program on Arduino board, we read the temperature sensor value and write it to 
+some serial port that can 
+
+on our website, when we provision a device, we ask for what kind of variables the device can send.
+
+so we provision this project on our website like
+Device - Arduino board
+variable - 
+	name - temperature 
+	type - float 
+	unit - kelvin etc.
+
+
+
