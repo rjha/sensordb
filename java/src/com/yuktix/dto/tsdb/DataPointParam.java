@@ -1,6 +1,8 @@
 package com.yuktix.dto.tsdb;
 
+import java.util.Iterator;
 import java.util.List;
+
 import com.yuktix.dto.provision.Reading;
 
 // @todo add json input validation using json-schema
@@ -36,4 +38,17 @@ public class DataPointParam {
 		this.readings = readings;
 	}
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder() ;
+		sb.append("\n Data point: \n ");
+		sb.append("\tprojectId:" + projectId + "\n");
+		sb.append("\tserial number:" + serialNumber);
+		
+		Iterator<Reading> iter = readings.iterator() ;
+		while(iter.hasNext()) {
+			sb.append(iter.next().toString());
+		}
+		
+		return sb.toString();
+	}
 }

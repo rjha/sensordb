@@ -17,6 +17,9 @@ public class SMSHandler {
 			param.setProjectId(parser.getProjectId());
 			param.setSerialNumber(parser.getSerialNumber());
 			param.setReadings(parser.getReadings());
+			if(Log.isDebug)
+				Log.debug(param.toString());
+			
 			SensorTSDB.add(param);
 			
 		} catch(RestException rex) {
