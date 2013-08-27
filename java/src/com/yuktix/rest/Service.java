@@ -1,10 +1,6 @@
 package com.yuktix.rest;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -17,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.StringUtils;
 
 import com.yuktix.data.Account;
+import com.yuktix.data.SMSHandler;
 import com.yuktix.data.SensorTSDB;
 import com.yuktix.data.Device;
 import com.yuktix.data.Project;
@@ -196,39 +193,18 @@ public class Service {
 	@Path("/sms")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public MapResponseBean parseSms(@BeanParam SmsBeanParam beanParam) {
-		
+		// SMS is a base-10 ascii bencoded string
 		String data = beanParam.getBody();
 		if(StringUtils.isBlank(data)) {
 			throw new ArgumentException("No SMS data received") ;
 		}
 		
 		if(Log.isDebug) {
-			Log.debug("sms from =>" + beanParam.getFrom());
-			Log.debug("sms body =>" + data);
+			Log.debug("sms: from field " + beanParam.getFrom());
+			Log.debug("sms: body " + data);
 		}
 		
-		String[] tokens = StringUtils.split(data, ',') ;
-		if(tokens.length != 3) {
-			throw new ArgumentException("SMS data is not in prescribed format") ;
-		}
-		
-		String projectId = tokens[0] ;
-		String serialNumber = tokens[1] ;
-		String value = tokens[2] ;
-		
-		DataPointParam param = new DataPointParam();
-		param.setProjectId(projectId);
-		param.setSerialNumber(serialNumber);
-		Reading reading = new Reading();
-		reading.setName("state");
-		reading.setValue(value);
-		String ts = String.format("%d", new Date().getTime());
-		reading.setTimestamp(ts);
-		List<Reading> readings = new ArrayList<Reading>();
-		readings.add(reading);
-		param.setReadings(readings);
-		 
-		SensorTSDB.add(param);
+		SMSHandler.addDataPoint(data);
 		MapResponseBean bean = new MapResponseBean(200,"success");
 		return bean ;
 		
