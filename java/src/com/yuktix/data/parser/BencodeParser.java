@@ -78,25 +78,25 @@ public class BencodeParser {
 		
 		for(byte[] bkey : bkeys) {
 			String key = new String(bkey,StandardCharsets.US_ASCII) ;
+			
 			// required keys
 			if(key.equals("projectId")) {
 				this.projectId = map.get(bkey).toString();
-			}
-				
-			if(key.equals("serialNumber")) {
+			} else if(key.equals("serialNumber")) {
 				this.serialNumber = map.get(bkey).toString();
-			}
+			} else {
 			
-			// keys other than required ones are readings
-			Reading reading = new Reading();
-			reading.setName(key);
-			reading.setValue(map.get(bkey).toString());
-			String ts = String.format("%d", new Date().getTime());
-			reading.setTimestamp(ts);
-			this.readings.add(reading);
-			
-			if(Log.isDebug) {
-				Log.debug("sms: reading " + reading.getName() + " value " + reading.getValue());
+				// keys other than required ones are readings
+				Reading reading = new Reading();
+				reading.setName(key);
+				reading.setValue(map.get(bkey).toString());
+				String ts = String.format("%d", new Date().getTime());
+				reading.setTimestamp(ts);
+				this.readings.add(reading);
+				
+				if(Log.isDebug) {
+					Log.debug("sms: dict " + reading.getName() + " value " + reading.getValue());
+				}
 			}
 		}
 		
