@@ -8,10 +8,8 @@
 
 	$data = array(
 				"projectId" => "p001" ,
-				"serialNumber" => "sensor001" ,
-				"readings" => array(
-					array("name" => "pressure" ,"value" => "187.0", "timestamp" => $unix_ts)), 
-                 "metaData" => array( array( "name" => "location" , "value" => "building002")));
+				"serialNumber" => "s001" ,
+                "readings" => array( array("name" => "temperature" ,"value" => "300", "timestamp" => $unix_ts))) ;
 
 	$post_data = json_encode($data);
     $cookies = array("COOKIE1" => "ABCD1234" , "COOKIE2" => "magic1234");
