@@ -48,4 +48,14 @@ public class SensorQueryParam {
 		this.timeSlice = timeSlice;
 	}
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("projectId: " + projectId) ;
+		sb.append("serial no: " + serialNumber) ;
+		sb.append("size: " + size) ;
+		
+		return sb.toString();
+		
+	}
+	
 }

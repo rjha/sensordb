@@ -50,5 +50,8 @@ public class Log {
 		logger.log(Level.FINE, message,ex);
 	}
 	
+	public static void debug(String message) {
+		logger.log(Level.FINE, message);
+	}
 	
 }
